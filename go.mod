@@ -21,8 +21,10 @@ replace (
 
 require (
 	github.com/docker/go-connections v0.4.0
+	github.com/go-chi/chi/v5 v5.0.8
 	github.com/sirupsen/logrus v1.9.0
 	github.com/streadway/amqp v1.0.0
+	github.com/stretchr/testify v1.8.0
 	github.com/testcontainers/testcontainers-go v0.16.0
 	go.mongodb.org/mongo-driver v1.11.0
 	gotest.tools v2.2.0+incompatible
@@ -114,7 +116,6 @@ require (
 	github.com/serialx/hashring v0.0.0-20190422032157-8b2912629002 // indirect
 	github.com/spf13/cobra v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.0 // indirect
 	github.com/theupdateframework/notary v0.7.0 // indirect
 	github.com/tonistiigi/fsutil v0.0.0-20220930225714-4638ad635be5 // indirect
 	github.com/tonistiigi/units v0.0.0-20180711220420-6950e57a87ea // indirect
