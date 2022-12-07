@@ -11,9 +11,9 @@ import (
 	"github.com/lawmatsuyama/transactions/infra/containerhelper"
 	"github.com/lawmatsuyama/transactions/infra/messagebroker"
 	"github.com/streadway/amqp"
+	"github.com/stretchr/testify/assert"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
-	"gotest.tools/assert"
 )
 
 type MessageTest struct {

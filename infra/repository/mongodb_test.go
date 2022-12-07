@@ -8,9 +8,9 @@ import (
 
 	"github.com/lawmatsuyama/transactions/infra/containerhelper"
 	"github.com/lawmatsuyama/transactions/infra/repository"
+	"github.com/stretchr/testify/assert"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
-	"gotest.tools/assert"
 )
 
 func TestStartMongodb(t *testing.T) {
@@ -35,10 +35,10 @@ func TestStartMongodb(t *testing.T) {
 	}
 
 	err = cli.Ping(ctx, nil)
-	assert.NilError(t, err, "ping error should be nil")
+	assert.Nil(t, err, "ping error should be nil")
 
 	err = repository.CloseDB(ctx)
-	assert.NilError(t, err, "close db error should be nil")
+	assert.Nil(t, err, "close db error should be nil")
 }
 
 func startMongodb(ctx context.Context) (container testcontainers.Container, port int, err error) {
