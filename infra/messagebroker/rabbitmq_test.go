@@ -7,8 +7,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/docker/go-connections/nat"
 	"github.com/lawmatsuyama/transactions/domain"
+	"github.com/lawmatsuyama/transactions/infra/containerhelper"
 	"github.com/lawmatsuyama/transactions/infra/messagebroker"
 	"github.com/streadway/amqp"
 	"github.com/testcontainers/testcontainers-go"
@@ -23,14 +23,9 @@ type MessageTest struct {
 func TestPublisherConsumerRabbitmq(t *testing.T) {
 	ctxBase := context.Background()
 	ctx, cancel := context.WithCancel(ctxBase)
-	container, err := startRabbitmq(ctx)
+	container, port, err := startRabbitmq(ctx)
 	if err != nil {
-		t.Error(err)
-	}
-
-	port, err := container.MappedPort(ctx, nat.Port("5672"))
-	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	defer func() {
@@ -40,7 +35,7 @@ func TestPublisherConsumerRabbitmq(t *testing.T) {
 		}
 	}()
 
-	os.Setenv("MESSAGE_BROKER_URL", fmt.Sprintf("amqp://guest:guest@localhost:%d?heartbeat=30&connection_timeout=120", port.Int()))
+	os.Setenv("MESSAGE_BROKER_URL", fmt.Sprintf("amqp://guest:guest@localhost:%d?heartbeat=30&connection_timeout=120", port))
 	var got MessageTest
 	domain.AddTaskCount()
 	setup := domain.BrokerSetup(func() error {
@@ -53,7 +48,7 @@ func TestPublisherConsumerRabbitmq(t *testing.T) {
 			defer domain.DoneTask()
 			err := json.Unmarshal(m.Body, &got)
 			if err != nil {
-				t.Error(err)
+				t.Fatal(err)
 			}
 		}
 
@@ -62,17 +57,16 @@ func TestPublisherConsumerRabbitmq(t *testing.T) {
 	})
 
 	messagebroker.Start(ctx, setup)
-
 	err = messagebroker.Publish(ctx, "", "queue_test", MessageTest{Message: "ok"}, 9)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	domain.WaitUntilAllTasksDone()
 	assert.Equal(t, got, MessageTest{Message: "ok"}, "message test should be equal")
 }
 
-func startRabbitmq(ctx context.Context) (testcontainers.Container, error) {
+func startRabbitmq(ctx context.Context) (container testcontainers.Container, port int, err error) {
 	req := testcontainers.ContainerRequest{
 		Image: "rabbitmq:3-management-alpine",
 		Env: map[string]string{
@@ -83,8 +77,5 @@ func startRabbitmq(ctx context.Context) (testcontainers.Container, error) {
 		WaitingFor:   wait.ForLog("Server startup complete"),
 	}
 
-	return testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
-		ContainerRequest: req,
-		Started:          true,
-	})
+	return containerhelper.CreateContainer(ctx, req, "5672")
 }
