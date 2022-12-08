@@ -35,7 +35,7 @@ func newMessageBroker(conn *amqp.Connection, chPub, chCons *amqp.Channel, chNoti
 	}
 }
 
-func Start(ctx context.Context, setuper domain.BrokerSetuper) {
+func Start(ctx context.Context, setuper BrokerSetuper) {
 	url := os.Getenv("MESSAGE_BROKER_URL")
 	if url == "" {
 		panic("message broker url is empty")
