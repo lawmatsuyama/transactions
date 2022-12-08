@@ -50,6 +50,14 @@ func GetClientDB(ctx context.Context) (*mongo.Client, error) {
 	return clientDB.Client, err
 }
 
+func CloseDB(ctx context.Context) (err error) {
+	if clientDB.Client == nil {
+		return nil
+	}
+	err = clientDB.Client.Disconnect(ctx)
+	return
+}
+
 func setClientDB(ctx context.Context) error {
 	uri := dbURI()
 	optURI := options.Client().ApplyURI(uri)
@@ -69,12 +77,4 @@ func setClientDB(ctx context.Context) error {
 
 func dbURI() (uri string) {
 	return os.Getenv("MONGODB_URI")
-}
-
-func CloseDB(ctx context.Context) (err error) {
-	if clientDB.Client == nil {
-		return nil
-	}
-	err = clientDB.Client.Disconnect(ctx)
-	return
 }
