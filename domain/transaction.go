@@ -11,3 +11,23 @@ type Transaction struct {
 	OperationType OperationType `json:"operation_type" bson:"operation_type"`
 	CreatedAt     time.Time     `json:"created_at" bson:"created_at"`
 }
+
+func (tr Transaction) IsAmountZero() bool {
+	return tr.Amount == 0
+}
+
+func (tr Transaction) IsValid() error {
+	if !tr.IsAmountZero() {
+		return ErrTransactionZeroAmount
+	}
+
+	if !tr.OperationType.IsValid() {
+		return ErrInvalidOperationType
+	}
+
+	if !tr.Origin.IsValid() {
+		return ErrInvalidOriginChannel
+	}
+
+	return nil
+}
