@@ -1,0 +1,26 @@
+{
+	"error": "invalid transaction",
+	"result": [
+		{
+			"errors": [
+				"invalid transaction origin channel"
+			],
+			"transaction": {
+				"amount": 14.1,
+				"description": "test2",
+				"operation": "credit"
+			}
+		},
+		{
+			"errors": [
+				"transaction amount is zero",
+				"invalid transaction operation type"
+			],
+			"transaction": {
+				"amount": 0,
+				"description": "test3",
+				"operation": "debit-invalid"
+			}
+		}
+	]
+}

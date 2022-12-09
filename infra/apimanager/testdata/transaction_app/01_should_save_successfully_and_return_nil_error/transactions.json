@@ -1,0 +1,31 @@
+{
+    "user_id": "f982c57d-7632-40f5-b03e-a582f9a63e16",
+    "origin_channel": "desktop-web",
+    "transactions": [
+        {
+            "description": "test1",
+            "amount": 5678.34,
+            "operation_type": "debit"
+        },
+        {
+            "description": "test2",
+            "amount": 14.1,
+            "operation_type": "credit"
+        },
+        {
+            "description": "test3",
+            "amount": 14.1,
+            "operation_type": "debit"
+        },
+        {
+            "description": "test4",
+            "amount": 3333.1,
+            "operation_type": "debit"
+        },
+        {
+            "description": "test5",
+            "amount": 199.1,
+            "operation_type": "debit"
+        }
+    ]
+}

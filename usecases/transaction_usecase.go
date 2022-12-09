@@ -24,10 +24,10 @@ func NewTransactionUseCase(transactionRepository domain.TransactionRepository, u
 }
 
 func (useCase TransactionUseCase) Save(ctx context.Context, userID string, transactions domain.Transactions) ([]domain.TransactionValidateResult, error) {
-	l := log.WithField("user_id", userID)
-	if userID == "" {
-		l.WithError(domain.ErrInvalidUser).Error("Invalid userID request")
-		return nil, domain.ErrInvalidUser
+
+	err := validateRequest(userID, transactions)
+	if err != nil {
+		return nil, err
 	}
 
 	user, err := useCase.UserRepository.GetByID(ctx, userID)
@@ -56,4 +56,19 @@ func (useCase TransactionUseCase) Save(ctx context.Context, userID string, trans
 
 	return nil, err
 
+}
+
+func validateRequest(userID string, transactions domain.Transactions) error {
+	l := log.WithField("user_id", userID)
+	if userID == "" {
+		l.WithError(domain.ErrInvalidUser).Error("Invalid userID request")
+		return domain.ErrInvalidUser
+	}
+
+	if len(transactions) == 0 {
+		l.WithError(domain.ErrInvalidTransaction).Error("There is no transactions to process")
+		return domain.ErrInvalidTransaction
+	}
+
+	return nil
 }

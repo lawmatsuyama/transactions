@@ -31,23 +31,22 @@ func (api TransactionAPI) Save(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
-	trs, err := api.UseCase.Save(ctx, trsReq.UserID, trsReq.ToTransactions(Now))
-
-	HandleResponse(w, r, trs, err)
+	trsResult, err := api.UseCase.Save(ctx, trsReq.UserID, trsReq.ToTransactions(Now))
+	var trsResponse []TransactionSaveResponse
+	if err != nil {
+		trsResponse = FromTransactionValidateResult(trsResult)
+	}
+	handleResponse(w, r, trsResponse, err)
 
 }
 
-// HandleResponse handle response body and header
-func HandleResponse(w http.ResponseWriter, r *http.Request, in any, err error) {
-
-	var statusCode int
+func handleResponse(w http.ResponseWriter, r *http.Request, in any, err error) {
 	var errStr string
-	switch err {
-	case nil:
-		statusCode = http.StatusOK
-	default:
-		statusCode = http.StatusBadRequest
-		errStr = err.Error()
+	statusCode := http.StatusOK
+	if err != nil {
+		errTr := domain.ErrorTransactionToError(err)
+		errStr = errTr.Error()
+		statusCode = errTr.Status()
 	}
 
 	genRes := GenericResponse{
@@ -64,5 +63,6 @@ func HandleResponse(w http.ResponseWriter, r *http.Request, in any, err error) {
 	w.WriteHeader(statusCode)
 	if _, err := w.Write(res); err != nil {
 		logrus.WithError(err).Error("couldnt send response to writer")
+		http.Error(w, domain.ErrUnknow.Error(), http.StatusBadRequest)
 	}
 }

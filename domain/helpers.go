@@ -17,7 +17,15 @@ func ReadJSON(t *testing.T, file string, object any) {
 	}
 
 	json.Unmarshal(b, object)
+}
 
+// Read read json from file and return bytes
+func Read(t *testing.T, file string) []byte {
+	b, err := os.ReadFile(filepath.Clean(file))
+	if err != nil {
+		t.Fatal("failed to read file")
+	}
+	return b
 }
 
 func CreateJSON(t *testing.T, file string, object any) {

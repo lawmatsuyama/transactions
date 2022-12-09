@@ -5,14 +5,14 @@ import (
 )
 
 type Transaction struct {
-	Description string
-	Amount      float64
-	Operation   string
+	Description string  `json:"description"`
+	Amount      float64 `json:"amount"`
+	Operation   string  `json:"operation"`
 }
 
 type TransactionSaveResponse struct {
-	Transaction Transaction
-	Errors      []string
+	Transaction Transaction `json:"transaction"`
+	Errors      []string    `json:"errors"`
 }
 
 func FromTransactionValidateResult(trsResult []domain.TransactionValidateResult) []TransactionSaveResponse {
@@ -31,6 +31,6 @@ func FromTransactionValidateResult(trsResult []domain.TransactionValidateResult)
 }
 
 type GenericResponse struct {
-	Error  string `json:"error"`
+	Error  string `json:"error,omitempty"`
 	Result any    `json:"result"`
 }
