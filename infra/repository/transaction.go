@@ -23,8 +23,9 @@ func (db TransactionDB) Save(ctx context.Context, transactions []*domain.Transac
 	models := bulkInsertModel(transactions)
 	_, err := c.BulkWrite(ctx, models)
 	if err != nil {
-		log.WithField("transactions", transactions).WithError(err).Error("failed to save transactions")
+		log.WithField("transactions", transactions).WithError(err).Error("Failed to save transactions")
+		return domain.ErrUnknow
 	}
 
-	return err
+	return nil
 }
