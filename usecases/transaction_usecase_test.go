@@ -14,8 +14,8 @@ type InputTestSupport struct {
 	UserID       string                `json:"user_id,omitempty"`
 	ExchangeName string                `json:"exchange_name,omitempty"`
 	RoutingKey   string                `json:"routing_key,omitempty"`
+	Object       domain.Transactions   `json:"object,omitempty"`
 	Transactions []*domain.Transaction `json:"transactions,omitempty"`
-	Object       any                   `json:"object,omitempty"`
 	Priority     uint8                 `json:"priority,omitempty"`
 }
 
@@ -82,7 +82,8 @@ func testSave(t *testing.T, name, userID, trsFile, userGetByIDFile, expInUserGet
 
 	var gotInputPub InputTestSupport
 	PublishMock = func(ctx context.Context, excName, routingKey string, obj any, priority uint8) error {
-		gotInputPub = InputTestSupport{ExchangeName: excName, RoutingKey: routingKey, Object: obj, Priority: priority}
+		trs := obj.(domain.Transactions)
+		gotInputPub = InputTestSupport{ExchangeName: excName, RoutingKey: routingKey, Object: trs, Priority: priority}
 		return errPublish
 	}
 
