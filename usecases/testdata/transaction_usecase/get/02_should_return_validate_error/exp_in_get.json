@@ -1,0 +1,11 @@
+{
+	"_id": "",
+	"description": "",
+	"user_id": "",
+	"origin": "",
+	"operation_type": "",
+	"amount_greater": 0,
+	"amount_less": 0,
+	"date_from": "0001-01-01T00:00:00Z",
+	"date_to": "0001-01-01T00:00:00Z"
+}

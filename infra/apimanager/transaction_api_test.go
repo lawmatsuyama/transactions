@@ -33,36 +33,36 @@ func TestSave(t *testing.T) {
 	}{
 		{
 			Name:                                  "01_should_save_successfully_and_return_nil_error",
-			TransactionsRequestFile:               "./testdata/transaction_app/01_should_save_successfully_and_return_nil_error/transactions.json",
-			TransactionsResultFile:                "./testdata/transaction_app/01_should_save_successfully_and_return_nil_error/transactions_result.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_app/01_should_save_successfully_and_return_nil_error/exp_in_save.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_app/01_should_save_successfully_and_return_nil_error/exp_transactions_result.json",
+			TransactionsRequestFile:               "./testdata/transaction_api/save/01_should_save_successfully_and_return_nil_error/transactions.json",
+			TransactionsResultFile:                "./testdata/transaction_api/save/01_should_save_successfully_and_return_nil_error/transactions_result.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_api/save/01_should_save_successfully_and_return_nil_error/exp_in_save.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_api/save/01_should_save_successfully_and_return_nil_error/exp_transactions_result.json",
 			ExpStatusCode:                         http.StatusOK,
 		},
 		{
 			Name:                                  "02_should_save_get_error_and_return_error",
-			TransactionsRequestFile:               "./testdata/transaction_app/02_should_save_get_error_and_return_error/transactions.json",
-			TransactionsResultFile:                "./testdata/transaction_app/02_should_save_get_error_and_return_error/transactions_result.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_app/02_should_save_get_error_and_return_error/exp_in_save.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_app/02_should_save_get_error_and_return_error/exp_transactions_result.json",
+			TransactionsRequestFile:               "./testdata/transaction_api/save/02_should_save_get_error_and_return_error/transactions.json",
+			TransactionsResultFile:                "./testdata/transaction_api/save/02_should_save_get_error_and_return_error/transactions_result.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_api/save/02_should_save_get_error_and_return_error/exp_in_save.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_api/save/02_should_save_get_error_and_return_error/exp_transactions_result.json",
 			ExpStatusCode:                         http.StatusBadRequest,
 			ErrSave:                               domain.ErrInvalidTransaction,
 		},
 		{
 			Name:                                  "03_should_write_get_error_and_return_error",
-			TransactionsRequestFile:               "./testdata/transaction_app/03_should_write_get_error_and_return_error/transactions.json",
-			TransactionsResultFile:                "./testdata/transaction_app/03_should_write_get_error_and_return_error/transactions_result.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_app/03_should_write_get_error_and_return_error/exp_in_save.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_app/03_should_write_get_error_and_return_error/exp_transactions_result.json",
+			TransactionsRequestFile:               "./testdata/transaction_api/save/03_should_write_get_error_and_return_error/transactions.json",
+			TransactionsResultFile:                "./testdata/transaction_api/save/03_should_write_get_error_and_return_error/transactions_result.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_api/save/03_should_write_get_error_and_return_error/exp_in_save.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_api/save/03_should_write_get_error_and_return_error/exp_transactions_result.json",
 			ErrWrite:                              domain.ErrUnknow,
 			ExpStatusCode:                         http.StatusBadRequest,
 		},
 		{
 			Name:                                  "04_should_json_decode_get_error_and_return_error",
-			TransactionsRequestFile:               "./testdata/transaction_app/04_should_json_decode_get_error_and_return_error/transactions.json",
-			TransactionsResultFile:                "./testdata/transaction_app/04_should_json_decode_get_error_and_return_error/transactions_result.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_app/04_should_json_decode_get_error_and_return_error/exp_in_save.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_app/04_should_json_decode_get_error_and_return_error/exp_transactions_result.json",
+			TransactionsRequestFile:               "./testdata/transaction_api/save/04_should_json_decode_get_error_and_return_error/transactions.json",
+			TransactionsResultFile:                "./testdata/transaction_api/save/04_should_json_decode_get_error_and_return_error/transactions_result.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_api/save/04_should_json_decode_get_error_and_return_error/exp_in_save.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_api/save/04_should_json_decode_get_error_and_return_error/exp_transactions_result.json",
 			ExpStatusCode:                         http.StatusBadRequest,
 		},
 	}
@@ -76,9 +76,9 @@ func TestSave(t *testing.T) {
 func testSave(t *testing.T, name, trsFile, trsResultFile, expInSaveFile, expTrsResultFile string, errSave, errWrite error, expStatusCode int) {
 	apimanager.Now = time.Date(2022, 10, 1, 10, 0, 0, 0, time.UTC)
 	var gotInputSave InputTestSupport
-	SaveMock = func(ctx context.Context, userID string, transactions domain.Transactions) ([]domain.TransactionValidateResult, error) {
+	SaveMock = func(ctx context.Context, userID string, transactions domain.Transactions) ([]domain.TransactionSaveResult, error) {
 		gotInputSave = InputTestSupport{UserID: userID, Transactions: transactions}
-		var trsResult []domain.TransactionValidateResult
+		var trsResult []domain.TransactionSaveResult
 		domain.ReadJSON(t, trsResultFile, &trsResult)
 		return trsResult, errSave
 	}
@@ -126,4 +126,65 @@ func testSave(t *testing.T, name, trsFile, trsResultFile, expInSaveFile, expTrsR
 			return i.Transaction.Description < j.Transaction.Description
 		}))
 	assert.Equal(t, expTrsResult.Error, gotTrsResult.Error, "expected error result should be equal got error result")
+}
+
+func TestGet(t *testing.T) {
+	testCases := []struct {
+		Name                                string
+		TransactionsGetRequestFile          string
+		TransactionsPagingFile              string
+		ExpectedInputGetFile                string
+		ExpectedTransactionsGetResponseFile string
+		ErrGet                              error
+		ExpStatusCode                       int
+	}{
+		{
+			Name:                                "01_should_return_transactions_ok",
+			TransactionsGetRequestFile:          "./testdata/transaction_api/get/01_should_return_transactions_ok/transactions_get_request.json",
+			TransactionsPagingFile:              "./testdata/transaction_api/get/01_should_return_transactions_ok/transactions_paging.json",
+			ExpectedInputGetFile:                "./testdata/transaction_api/get/01_should_return_transactions_ok/exp_in_get.json",
+			ExpectedTransactionsGetResponseFile: "./testdata/transaction_api/get/01_should_return_transactions_ok/exp_response.json",
+			ExpStatusCode:                       http.StatusOK,
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.Name, func(t *testing.T) {
+
+		})
+	}
+}
+
+func testGet(t *testing.T, name, trsGetRequestFile, trsPagFile, expInGetFile, expTrsGetRespFile string, errGet error, status int) {
+	var gotInGet domain.TransactionFilter
+	GetMock = func(ctx context.Context, filter domain.TransactionFilter) (domain.TransactionsPaging, error) {
+		gotInGet = filter
+		var trsPag domain.TransactionsPaging
+		domain.ReadJSON(t, trsPagFile, &trsPag)
+		return trsPag, errGet
+	}
+
+	var gotStatusCode int
+	WriteHeaderMock = func(statusCode int) {
+		gotStatusCode = statusCode
+	}
+
+	var gotResponse apimanager.GenericResponse
+	WriteMock = func(b []byte) (int, error) {
+		err := json.Unmarshal(b, &gotResponse)
+		if err != nil {
+			return 0, nil
+		}
+
+		return len(b), nil
+	}
+
+	bTrs := domain.Read(t, trsGetRequestFile)
+	req, err := http.NewRequest("POST", "localhost:8888", bytes.NewBuffer(bTrs))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	transactionAPI := apimanager.NewTransactionAPI(mock{})
+	transactionAPI.Save(mock{}, req)
+
 }

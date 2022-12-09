@@ -23,34 +23,41 @@ func NewTransactionUseCase(transactionRepository domain.TransactionRepository, u
 	}
 }
 
-func (useCase TransactionUseCase) Save(ctx context.Context, userID string, transactions domain.Transactions) ([]domain.TransactionValidateResult, error) {
-
-	err := validateRequest(userID, transactions)
-	if err != nil {
-		return nil, err
+func (useCase TransactionUseCase) Save(ctx context.Context, userID string, transactions domain.Transactions) ([]domain.TransactionSaveResult, error) {
+	l := log.WithField("user_id", userID)
+	if userID == "" {
+		l.WithError(domain.ErrInvalidUser).Error("Invalid userID request")
+		return nil, domain.ErrInvalidUser
 	}
 
 	user, err := useCase.UserRepository.GetByID(ctx, userID)
 	if err != nil {
+		l.WithError(err).Error("Failed to get user")
 		return nil, err
 	}
 
 	if err = user.IsValid(); err != nil {
+		l.WithError(err).Error("User is invalid")
 		return nil, err
 	}
 
 	trsResult, err := transactions.ValidateTransactions()
 	if err != nil {
+		l.WithError(err).Error("There are some transactions invalid")
 		return trsResult, err
 	}
 
 	err = useCase.SessionControl.WithSession(ctx, func(sc context.Context) error {
 		err := useCase.TransactionRepository.Save(sc, transactions)
 		if err != nil {
+			l.WithError(err).Error("Failed to save transactions")
 			return err
 		}
 
 		err = useCase.MessagePublisher.Publish(ctx, domain.ExchangeTransaction, "", transactions, 9)
+		if err != nil {
+			l.WithError(err).Error("Failed to publish transactions in exchange")
+		}
 		return err
 	})
 
@@ -58,17 +65,14 @@ func (useCase TransactionUseCase) Save(ctx context.Context, userID string, trans
 
 }
 
-func validateRequest(userID string, transactions domain.Transactions) error {
-	l := log.WithField("user_id", userID)
-	if userID == "" {
-		l.WithError(domain.ErrInvalidUser).Error("Invalid userID request")
-		return domain.ErrInvalidUser
+func (useCase TransactionUseCase) Get(ctx context.Context, filter domain.TransactionFilter) (domain.TransactionsPaging, error) {
+	l := log.WithField("filter", filter)
+	err := filter.Validate()
+	if err != nil {
+		l.WithError(err).Error("Filter is invalid")
+		return domain.TransactionsPaging{}, err
 	}
 
-	if len(transactions) == 0 {
-		l.WithError(domain.ErrInvalidTransaction).Error("There is no transactions to process")
-		return domain.ErrInvalidTransaction
-	}
-
-	return nil
+	trsPage, err := useCase.TransactionRepository.Get(ctx, filter)
+	return trsPage, err
 }

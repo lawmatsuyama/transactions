@@ -2,13 +2,21 @@ package domain
 
 import (
 	"sync"
+
+	"github.com/sirupsen/logrus"
 )
 
 type Transactions []*Transaction
 
-func (trs Transactions) ValidateTransactions() ([]TransactionValidateResult, error) {
-	chResult := make(chan TransactionValidateResult, len(trs))
-	trsResult := make([]TransactionValidateResult, 0, len(trs))
+func (trs Transactions) ValidateTransactions() ([]TransactionSaveResult, error) {
+	chResult := make(chan TransactionSaveResult, len(trs))
+	trsResult := make([]TransactionSaveResult, 0, len(trs))
+
+	if len(trs) == 0 {
+		logrus.WithError(ErrInvalidTransaction).Error("There is no transactions to process")
+		return nil, ErrInvalidTransaction
+	}
+
 	go func() {
 		trs.validateTransactionsConcurrently(chResult)
 	}()
@@ -26,14 +34,14 @@ func (trs Transactions) ValidateTransactions() ([]TransactionValidateResult, err
 	return nil, nil
 }
 
-func (trs Transactions) validateTransactionsConcurrently(chResult chan<- TransactionValidateResult) {
+func (trs Transactions) validateTransactionsConcurrently(chResult chan<- TransactionSaveResult) {
 	wg := &sync.WaitGroup{}
 	for _, tr := range trs {
 		wg.Add(1)
 		go func(tr *Transaction) {
 			defer wg.Done()
 			if listErr := tr.IsValid(); len(listErr) > 0 {
-				chResult <- TransactionValidateResult{Transaction: tr, Errors: listErr}
+				chResult <- TransactionSaveResult{Transaction: tr, Errors: listErr}
 			}
 		}(tr)
 	}

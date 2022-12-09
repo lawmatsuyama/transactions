@@ -32,12 +32,29 @@ func (api TransactionAPI) Save(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 	trsResult, err := api.UseCase.Save(ctx, trsReq.UserID, trsReq.ToTransactions(Now))
-	var trsResponse []TransactionSaveResponse
+	var response []TransactionSaveResponse
 	if err != nil {
-		trsResponse = FromTransactionValidateResult(trsResult)
+		response = FromTransactionSaveResult(trsResult)
 	}
-	handleResponse(w, r, trsResponse, err)
+	handleResponse(w, r, response, err)
+}
 
+func (api TransactionAPI) Get(w http.ResponseWriter, r *http.Request) {
+	var trsReq TransactionsGetRequest
+	err := json.NewDecoder(r.Body).Decode(&trsReq)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	ctx := context.Background()
+	trsPag, err := api.UseCase.Get(ctx, trsReq.ToTransactionsFilter())
+	var response TransactionsGetResponse
+	if err != nil {
+		response = FromTransactionPaging(trsPag)
+	}
+
+	handleResponse(w, r, response, err)
 }
 
 func handleResponse(w http.ResponseWriter, r *http.Request, in any, err error) {

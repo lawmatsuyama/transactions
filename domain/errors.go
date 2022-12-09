@@ -35,5 +35,6 @@ var (
 	ErrInvalidOriginChannel  = ErrorTransaction{ErrorOrigin: errors.New("invalid transaction origin channel"), StatusCode: http.StatusBadRequest}
 	ErrInvalidTransaction    = ErrorTransaction{ErrorOrigin: errors.New("invalid transaction"), StatusCode: http.StatusBadRequest}
 	ErrUserNotFound          = ErrorTransaction{ErrorOrigin: errors.New("user not found"), StatusCode: http.StatusNotFound}
+	ErrTransactionsNotFound  = ErrorTransaction{ErrorOrigin: errors.New("transactions not found"), StatusCode: http.StatusNotFound}
 	ErrUnknow                = ErrorTransaction{ErrorOrigin: errors.New("unknow error"), StatusCode: http.StatusBadRequest}
 )

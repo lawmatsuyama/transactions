@@ -9,12 +9,8 @@ type UserRepository interface {
 }
 
 type TransactionRepository interface {
-	Save(ctx context.Context, transactions []*Transaction) error
-	// GetID(ctx context.Context, id string) (Transaction, error)
-	// GetByUserID(ctx context.Context, userID string, page int) ([]Transaction, error)
-	// GetByUserIDAndID(ctx context.Context, id, userID string) (Transaction, error)
-	// GetByUserIDAndFromDate(ctx context.Context, userID string, date time.Time, page int) ([]Transaction, error)
-	// GetFromDate(ctx context.Context, date time.Time, page int) ([]Transaction, error)
+	Save(ctx context.Context, transactions Transactions) error
+	Get(ctx context.Context, filterTrs TransactionFilter) (TransactionsPaging, error)
 }
 
 type SessionControlRepository interface {
@@ -26,7 +22,8 @@ type MessagePublisher interface {
 }
 
 type TransactionUseCase interface {
-	Save(ctx context.Context, userID string, transactions Transactions) ([]TransactionValidateResult, error)
+	Save(ctx context.Context, userID string, transactions Transactions) ([]TransactionSaveResult, error)
+	Get(ctx context.Context, filterTrs TransactionFilter) (TransactionsPaging, error)
 }
 
 type UUIDGenerator interface {

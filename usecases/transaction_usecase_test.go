@@ -33,97 +33,97 @@ func TestSave(t *testing.T) {
 		ErrUserGetByID                        error
 		ErrSave                               error
 		ErrPublish                            error
-		ExpErr                                error
+		ExpectedError                         error
 	}{
 		{
 			Name:                                  "01_should_save_and_publish_transactions_successfully_and_return_nil_error",
 			UserID:                                "f982c57d-7632-40f5-b03e-a582f9a63e16",
-			TransactionsFile:                      "./testdata/transaction_usecase/01_should_save_and_publish_transactions_successfully_and_return_nil_error/transactions.json",
-			UserGetByIDFile:                       "./testdata/transaction_usecase/01_should_save_and_publish_transactions_successfully_and_return_nil_error/user_get_by_id.json",
-			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/01_should_save_and_publish_transactions_successfully_and_return_nil_error/exp_in_user_get_by_id.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/01_should_save_and_publish_transactions_successfully_and_return_nil_error/exp_in_save.json",
-			ExpectedInputPublishFile:              "./testdata/transaction_usecase/01_should_save_and_publish_transactions_successfully_and_return_nil_error/exp_in_publish.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/01_should_save_and_publish_transactions_successfully_and_return_nil_error/exp_transactions_result.json",
+			TransactionsFile:                      "./testdata/transaction_usecase/save/01_should_save_and_publish_transactions_successfully_and_return_nil_error/transactions.json",
+			UserGetByIDFile:                       "./testdata/transaction_usecase/save/01_should_save_and_publish_transactions_successfully_and_return_nil_error/user_get_by_id.json",
+			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/save/01_should_save_and_publish_transactions_successfully_and_return_nil_error/exp_in_user_get_by_id.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/save/01_should_save_and_publish_transactions_successfully_and_return_nil_error/exp_in_save.json",
+			ExpectedInputPublishFile:              "./testdata/transaction_usecase/save/01_should_save_and_publish_transactions_successfully_and_return_nil_error/exp_in_publish.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/save/01_should_save_and_publish_transactions_successfully_and_return_nil_error/exp_transactions_result.json",
 		},
 		{
 			Name:                                  "02_should_not_found_user_and_return_error",
 			UserID:                                "f982c57d-7632-40f5-b03e-a582f9a63e16",
-			TransactionsFile:                      "./testdata/transaction_usecase/02_should_not_found_user_and_return_error/transactions.json",
-			UserGetByIDFile:                       "./testdata/transaction_usecase/02_should_not_found_user_and_return_error/user_get_by_id.json",
-			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/02_should_not_found_user_and_return_error/exp_in_user_get_by_id.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/02_should_not_found_user_and_return_error/exp_in_save.json",
-			ExpectedInputPublishFile:              "./testdata/transaction_usecase/02_should_not_found_user_and_return_error/exp_in_publish.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/02_should_not_found_user_and_return_error/exp_transactions_result.json",
+			TransactionsFile:                      "./testdata/transaction_usecase/save/02_should_not_found_user_and_return_error/transactions.json",
+			UserGetByIDFile:                       "./testdata/transaction_usecase/save/02_should_not_found_user_and_return_error/user_get_by_id.json",
+			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/save/02_should_not_found_user_and_return_error/exp_in_user_get_by_id.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/save/02_should_not_found_user_and_return_error/exp_in_save.json",
+			ExpectedInputPublishFile:              "./testdata/transaction_usecase/save/02_should_not_found_user_and_return_error/exp_in_publish.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/save/02_should_not_found_user_and_return_error/exp_transactions_result.json",
 			ErrUserGetByID:                        domain.ErrUserNotFound,
-			ExpErr:                                domain.ErrUserNotFound,
+			ExpectedError:                         domain.ErrUserNotFound,
 		},
 		{
 			Name:                                  "03_should_get_error_on_is_valid_user_and_return_error",
 			UserID:                                "f982c57d-7632-40f5-b03e-a582f9a63e16",
-			TransactionsFile:                      "./testdata/transaction_usecase/03_should_trigger_invalid_user_and_return_error/transactions.json",
-			UserGetByIDFile:                       "./testdata/transaction_usecase/03_should_trigger_invalid_user_and_return_error/user_get_by_id.json",
-			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/03_should_trigger_invalid_user_and_return_error/exp_in_user_get_by_id.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/03_should_trigger_invalid_user_and_return_error/exp_in_save.json",
-			ExpectedInputPublishFile:              "./testdata/transaction_usecase/03_should_trigger_invalid_user_and_return_error/exp_in_publish.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/03_should_trigger_invalid_user_and_return_error/exp_transactions_result.json",
-			ExpErr:                                domain.ErrDisabledUser,
+			TransactionsFile:                      "./testdata/transaction_usecase/save/03_should_trigger_invalid_user_and_return_error/transactions.json",
+			UserGetByIDFile:                       "./testdata/transaction_usecase/save/03_should_trigger_invalid_user_and_return_error/user_get_by_id.json",
+			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/save/03_should_trigger_invalid_user_and_return_error/exp_in_user_get_by_id.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/save/03_should_trigger_invalid_user_and_return_error/exp_in_save.json",
+			ExpectedInputPublishFile:              "./testdata/transaction_usecase/save/03_should_trigger_invalid_user_and_return_error/exp_in_publish.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/save/03_should_trigger_invalid_user_and_return_error/exp_transactions_result.json",
+			ExpectedError:                         domain.ErrDisabledUser,
 		},
 		{
 			Name:                                  "04_should_get_error_on_validate_transactions_and_return_error",
 			UserID:                                "f982c57d-7632-40f5-b03e-a582f9a63e16",
-			TransactionsFile:                      "./testdata/transaction_usecase/04_should_get_error_on_validate_transactions_and_return_error/transactions.json",
-			UserGetByIDFile:                       "./testdata/transaction_usecase/04_should_get_error_on_validate_transactions_and_return_error/user_get_by_id.json",
-			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/04_should_get_error_on_validate_transactions_and_return_error/exp_in_user_get_by_id.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/04_should_get_error_on_validate_transactions_and_return_error/exp_in_save.json",
-			ExpectedInputPublishFile:              "./testdata/transaction_usecase/04_should_get_error_on_validate_transactions_and_return_error/exp_in_publish.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/04_should_get_error_on_validate_transactions_and_return_error/exp_transactions_result.json",
-			ExpErr:                                domain.ErrInvalidTransaction,
+			TransactionsFile:                      "./testdata/transaction_usecase/save/04_should_get_error_on_validate_transactions_and_return_error/transactions.json",
+			UserGetByIDFile:                       "./testdata/transaction_usecase/save/04_should_get_error_on_validate_transactions_and_return_error/user_get_by_id.json",
+			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/save/04_should_get_error_on_validate_transactions_and_return_error/exp_in_user_get_by_id.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/save/04_should_get_error_on_validate_transactions_and_return_error/exp_in_save.json",
+			ExpectedInputPublishFile:              "./testdata/transaction_usecase/save/04_should_get_error_on_validate_transactions_and_return_error/exp_in_publish.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/save/04_should_get_error_on_validate_transactions_and_return_error/exp_transactions_result.json",
+			ExpectedError:                         domain.ErrInvalidTransaction,
 		},
 		{
 			Name:                                  "05_should_get_error_on_save_and_return_error",
 			UserID:                                "f982c57d-7632-40f5-b03e-a582f9a63e16",
-			TransactionsFile:                      "./testdata/transaction_usecase/05_should_get_error_on_save_and_return_error/transactions.json",
-			UserGetByIDFile:                       "./testdata/transaction_usecase/05_should_get_error_on_save_and_return_error/user_get_by_id.json",
-			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/05_should_get_error_on_save_and_return_error/exp_in_user_get_by_id.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/05_should_get_error_on_save_and_return_error/exp_in_save.json",
-			ExpectedInputPublishFile:              "./testdata/transaction_usecase/05_should_get_error_on_save_and_return_error/exp_in_publish.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/05_should_get_error_on_save_and_return_error/exp_transactions_result.json",
+			TransactionsFile:                      "./testdata/transaction_usecase/save/05_should_get_error_on_save_and_return_error/transactions.json",
+			UserGetByIDFile:                       "./testdata/transaction_usecase/save/05_should_get_error_on_save_and_return_error/user_get_by_id.json",
+			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/save/05_should_get_error_on_save_and_return_error/exp_in_user_get_by_id.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/save/05_should_get_error_on_save_and_return_error/exp_in_save.json",
+			ExpectedInputPublishFile:              "./testdata/transaction_usecase/save/05_should_get_error_on_save_and_return_error/exp_in_publish.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/save/05_should_get_error_on_save_and_return_error/exp_transactions_result.json",
 			ErrSave:                               domain.ErrUnknow,
-			ExpErr:                                domain.ErrUnknow,
+			ExpectedError:                         domain.ErrUnknow,
 		},
 		{
 			Name:                                  "06_should_get_error_on_publish_and_return_error",
 			UserID:                                "f982c57d-7632-40f5-b03e-a582f9a63e16",
-			TransactionsFile:                      "./testdata/transaction_usecase/06_should_get_error_on_publish_and_return_error/transactions.json",
-			UserGetByIDFile:                       "./testdata/transaction_usecase/06_should_get_error_on_publish_and_return_error/user_get_by_id.json",
-			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/06_should_get_error_on_publish_and_return_error/exp_in_user_get_by_id.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/06_should_get_error_on_publish_and_return_error/exp_in_save.json",
-			ExpectedInputPublishFile:              "./testdata/transaction_usecase/06_should_get_error_on_publish_and_return_error/exp_in_publish.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/06_should_get_error_on_publish_and_return_error/exp_transactions_result.json",
+			TransactionsFile:                      "./testdata/transaction_usecase/save/06_should_get_error_on_publish_and_return_error/transactions.json",
+			UserGetByIDFile:                       "./testdata/transaction_usecase/save/06_should_get_error_on_publish_and_return_error/user_get_by_id.json",
+			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/save/06_should_get_error_on_publish_and_return_error/exp_in_user_get_by_id.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/save/06_should_get_error_on_publish_and_return_error/exp_in_save.json",
+			ExpectedInputPublishFile:              "./testdata/transaction_usecase/save/06_should_get_error_on_publish_and_return_error/exp_in_publish.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/save/06_should_get_error_on_publish_and_return_error/exp_transactions_result.json",
 			ErrPublish:                            domain.ErrUnknow,
-			ExpErr:                                domain.ErrUnknow,
+			ExpectedError:                         domain.ErrUnknow,
 		},
 		{
 			Name:                                  "07_should_get_user_is_empty_and_return_error",
 			UserID:                                "",
-			TransactionsFile:                      "./testdata/transaction_usecase/07_should_get_user_is_empty_and_return_error/transactions.json",
-			UserGetByIDFile:                       "./testdata/transaction_usecase/07_should_get_user_is_empty_and_return_error/user_get_by_id.json",
-			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/07_should_get_user_is_empty_and_return_error/exp_in_user_get_by_id.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/07_should_get_user_is_empty_and_return_error/exp_in_save.json",
-			ExpectedInputPublishFile:              "./testdata/transaction_usecase/07_should_get_user_is_empty_and_return_error/exp_in_publish.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/07_should_get_user_is_empty_and_return_error/exp_transactions_result.json",
-			ExpErr:                                domain.ErrInvalidUser,
+			TransactionsFile:                      "./testdata/transaction_usecase/save/07_should_get_user_is_empty_and_return_error/transactions.json",
+			UserGetByIDFile:                       "./testdata/transaction_usecase/save/07_should_get_user_is_empty_and_return_error/user_get_by_id.json",
+			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/save/07_should_get_user_is_empty_and_return_error/exp_in_user_get_by_id.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/save/07_should_get_user_is_empty_and_return_error/exp_in_save.json",
+			ExpectedInputPublishFile:              "./testdata/transaction_usecase/save/07_should_get_user_is_empty_and_return_error/exp_in_publish.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/save/07_should_get_user_is_empty_and_return_error/exp_transactions_result.json",
+			ExpectedError:                         domain.ErrInvalidUser,
 		},
 		{
 			Name:                                  "08_should_get_no_transcations_request_and_return_error",
 			UserID:                                "f982c57d-7632-40f5-b03e-a582f9a63e16",
-			TransactionsFile:                      "./testdata/transaction_usecase/08_should_get_no_transcations_request_and_return_error/transactions.json",
-			UserGetByIDFile:                       "./testdata/transaction_usecase/08_should_get_no_transcations_request_and_return_error/user_get_by_id.json",
-			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/08_should_get_no_transcations_request_and_return_error/exp_in_user_get_by_id.json",
-			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/08_should_get_no_transcations_request_and_return_error/exp_in_save.json",
-			ExpectedInputPublishFile:              "./testdata/transaction_usecase/08_should_get_no_transcations_request_and_return_error/exp_in_publish.json",
-			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/08_should_get_no_transcations_request_and_return_error/exp_transactions_result.json",
-			ExpErr:                                domain.ErrInvalidTransaction,
+			TransactionsFile:                      "./testdata/transaction_usecase/save/08_should_get_no_transcations_request_and_return_error/transactions.json",
+			UserGetByIDFile:                       "./testdata/transaction_usecase/save/08_should_get_no_transcations_request_and_return_error/user_get_by_id.json",
+			ExpectedInputUserGetByIDFile:          "./testdata/transaction_usecase/save/08_should_get_no_transcations_request_and_return_error/exp_in_user_get_by_id.json",
+			ExpectedInputSaveFile:                 "./testdata/transaction_usecase/save/08_should_get_no_transcations_request_and_return_error/exp_in_save.json",
+			ExpectedInputPublishFile:              "./testdata/transaction_usecase/save/08_should_get_no_transcations_request_and_return_error/exp_in_publish.json",
+			ExpectedTransactionValidateResultFile: "./testdata/transaction_usecase/save/08_should_get_no_transcations_request_and_return_error/exp_transactions_result.json",
+			ExpectedError:                         domain.ErrInvalidTransaction,
 		},
 	}
 	for _, tc := range testCases {
@@ -140,7 +140,7 @@ func TestSave(t *testing.T) {
 				tc.ErrUserGetByID,
 				tc.ErrSave,
 				tc.ErrPublish,
-				tc.ExpErr,
+				tc.ExpectedError,
 			)
 		})
 	}
@@ -156,7 +156,7 @@ func testSave(t *testing.T, name, userID, trsFile, userGetByIDFile, expInUserGet
 	}
 
 	var gotInputSave InputTestSupport
-	SaveMock = func(ctx context.Context, transactions []*domain.Transaction) error {
+	SaveMock = func(ctx context.Context, transactions domain.Transactions) error {
 		gotInputSave = InputTestSupport{Transactions: transactions}
 		return errSave
 	}
@@ -194,7 +194,7 @@ func testSave(t *testing.T, name, userID, trsFile, userGetByIDFile, expInUserGet
 	var expInPub InputTestSupport
 	domain.ReadJSON(t, expInPubFile, &expInPub)
 
-	var expTrsResult []domain.TransactionValidateResult
+	var expTrsResult []domain.TransactionSaveResult
 	domain.ReadJSON(t, expTrsResultFile, &expTrsResult)
 
 	assert.Equal(t, expErr, err)
@@ -202,8 +202,81 @@ func testSave(t *testing.T, name, userID, trsFile, userGetByIDFile, expInUserGet
 	domain.Compare(t, "compare input Save", expInSave, gotInputSave)
 	domain.Compare(t, "compare input Publish", expInPub, gotInputPub)
 	domain.Compare(t, "compare input TransactionValidateResult", expTrsResult, gotTrsResult,
-		cmpopts.SortSlices(func(i, j domain.TransactionValidateResult) bool {
+		cmpopts.SortSlices(func(i, j domain.TransactionSaveResult) bool {
 			return i.Transaction.Description < j.Transaction.Description
 		}))
 
+}
+
+func TestGet(t *testing.T) {
+	testCases := []struct {
+		Name                     string
+		FilterFile               string
+		TransactionsFile         string
+		ExpectedInputGetFile     string
+		ExpectedTransactionsFile string
+		ErrorGet                 error
+		ExpectedError            error
+	}{
+		{
+			Name:                     "01_should_return_transactions_ok",
+			FilterFile:               "./testdata/transaction_usecase/get/01_should_return_transactions_ok/filter.json",
+			TransactionsFile:         "./testdata/transaction_usecase/get/01_should_return_transactions_ok/transactions.json",
+			ExpectedInputGetFile:     "./testdata/transaction_usecase/get/01_should_return_transactions_ok/exp_in_get.json",
+			ExpectedTransactionsFile: "./testdata/transaction_usecase/get/01_should_return_transactions_ok/exp_transactions.json",
+		},
+		{
+			Name:                     "02_should_return_validate_error",
+			FilterFile:               "./testdata/transaction_usecase/get/02_should_return_validate_error/filter.json",
+			TransactionsFile:         "./testdata/transaction_usecase/get/02_should_return_validate_error/transactions.json",
+			ExpectedInputGetFile:     "./testdata/transaction_usecase/get/02_should_return_validate_error/exp_in_get.json",
+			ExpectedTransactionsFile: "./testdata/transaction_usecase/get/02_should_return_validate_error/exp_transactions.json",
+			ExpectedError:            domain.ErrInvalidOriginChannel,
+		},
+		{
+			Name:                     "03_get_repository_should_return_error",
+			FilterFile:               "./testdata/transaction_usecase/get/03_get_repository_should_return_error/filter.json",
+			TransactionsFile:         "./testdata/transaction_usecase/get/03_get_repository_should_return_error/transactions.json",
+			ExpectedInputGetFile:     "./testdata/transaction_usecase/get/03_get_repository_should_return_error/exp_in_get.json",
+			ExpectedTransactionsFile: "./testdata/transaction_usecase/get/03_get_repository_should_return_error/exp_transactions.json",
+			ErrorGet:                 domain.ErrTransactionsNotFound,
+			ExpectedError:            domain.ErrTransactionsNotFound,
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.Name, func(t *testing.T) {
+			testGet(t, tc.Name, tc.FilterFile, tc.TransactionsFile, tc.ExpectedInputGetFile, tc.ExpectedTransactionsFile, tc.ErrorGet, tc.ExpectedError)
+		})
+	}
+}
+
+func testGet(t *testing.T, name, filterFile, trsFile, expInGetFile, expTrsFile string, errGet, expErr error) {
+	var filter domain.TransactionFilter
+	domain.ReadJSON(t, filterFile, &filter)
+
+	var gotInGet domain.TransactionFilter
+	GetMock = func(ctx context.Context, filterTrs domain.TransactionFilter) (domain.TransactionsPaging, error) {
+		gotInGet = filterTrs
+		var trs domain.TransactionsPaging
+		domain.ReadJSON(t, trsFile, &trs)
+		return trs, errGet
+	}
+
+	transactionUseCase := usecases.NewTransactionUseCase(mock{}, mock{}, mock{}, mock{})
+	gotTrs, err := transactionUseCase.Get(context.Background(), filter)
+	if *update {
+		domain.CreateJSON(t, expInGetFile, gotInGet)
+		domain.CreateJSON(t, expTrsFile, gotTrs)
+		return
+	}
+
+	var expInGet domain.TransactionFilter
+	domain.ReadJSON(t, expInGetFile, &expInGet)
+
+	var expTrs domain.TransactionsPaging
+	domain.ReadJSON(t, expTrsFile, &expTrs)
+
+	assert.Equal(t, expErr, err)
+	domain.Compare(t, "compare input of Get func", expInGet, gotInGet)
+	domain.Compare(t, "compare transactions", expTrs, gotTrs)
 }

@@ -7,7 +7,8 @@ import (
 )
 
 var (
-	SaveMock        func(ctx context.Context, transactions []*domain.Transaction) error
+	SaveMock        func(ctx context.Context, transactions domain.Transactions) error
+	GetMock         func(ctx context.Context, filterTrs domain.TransactionFilter) (domain.TransactionsPaging, error)
 	GetByIDMock     func(ctx context.Context, id string) (domain.User, error)
 	PublishMock     func(ctx context.Context, excName, routingKey string, obj any, priority uint8) error
 	WithSessionMock func(ctx context.Context, f domain.FuncDBSession) error
@@ -15,8 +16,12 @@ var (
 
 type mock struct{}
 
-func (m mock) Save(ctx context.Context, transactions []*domain.Transaction) error {
+func (m mock) Save(ctx context.Context, transactions domain.Transactions) error {
 	return SaveMock(ctx, transactions)
+}
+
+func (m mock) Get(ctx context.Context, filterTrs domain.TransactionFilter) (domain.TransactionsPaging, error) {
+	return GetMock(ctx, filterTrs)
 }
 
 func (m mock) GetByID(ctx context.Context, id string) (domain.User, error) {
