@@ -37,10 +37,7 @@ func TestTransactionIsValid(t *testing.T) {
 
 func testTransactionIsValid(t *testing.T, tcName, trFile string, expErrs []string) {
 	var tr domain.Transaction
-	err := domain.ReadJSON(trFile, &tr)
-	if err != nil {
-		t.Fatal("failed to read transaction file")
-	}
+	domain.ReadJSON(t, trFile, &tr)
 
 	gotErrs := tr.IsValid()
 	assert.Equal(t, expErrs, gotErrs, "expected errors should be equal of got errors")

@@ -109,6 +109,21 @@ func CreateQueue(queueName string, durable bool, args amqp.Table) (amqp.Queue, e
 	return q, err
 }
 
+// CreateExchange creates exchange on rabbitMQ, case does not exist
+func CreateExchange(excName string, excType string, args amqp.Table) error {
+	err := broker.consumerChannel.ExchangeDeclare(
+		excName,
+		excType,
+		true,
+		false,
+		false,
+		false,
+		args,
+	)
+
+	return err
+}
+
 func BindQueueExchange(queueName, exchangeName, routingKey string) error {
 	return broker.consumerChannel.QueueBind(
 		queueName,    //name of the queue
@@ -125,7 +140,7 @@ func Consume(ctx context.Context, queueName, consumer string, f func(amqp.Delive
 	}()
 }
 
-func Publish(ctx context.Context, excName, routingKey string, obj interface{}, priority uint8) error {
+func Publish(ctx context.Context, excName, routingKey string, obj any, priority uint8) error {
 	retry := 0
 	for {
 		if broker == nil {

@@ -7,21 +7,19 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const (
-	exchangeTransaction = "EXC.TRANSACTION.SAVED"
-)
-
 type TransactionUseCase struct {
 	TransactionRepository domain.TransactionRepository
 	UserRepository        domain.UserRepository
 	MessagePublisher      domain.MessagePublisher
+	SessionControl        domain.SessionControlRepository
 }
 
-func NewTransactionUseCase(transactionRepository domain.TransactionRepository, userRepository domain.UserRepository, messagePublisher domain.MessagePublisher) TransactionUseCase {
+func NewTransactionUseCase(transactionRepository domain.TransactionRepository, userRepository domain.UserRepository, messagePublisher domain.MessagePublisher, sessionControl domain.SessionControlRepository) TransactionUseCase {
 	return TransactionUseCase{
 		TransactionRepository: transactionRepository,
 		UserRepository:        userRepository,
 		MessagePublisher:      messagePublisher,
+		SessionControl:        sessionControl,
 	}
 }
 
@@ -46,15 +44,16 @@ func (useCase TransactionUseCase) Save(ctx context.Context, userID string, trans
 		return trsResult, err
 	}
 
-	err = useCase.TransactionRepository.Save(ctx, transactions)
-	if err != nil {
-		return nil, err
-	}
+	err = useCase.SessionControl.WithSession(ctx, func(sc context.Context) error {
+		err := useCase.TransactionRepository.Save(sc, transactions)
+		if err != nil {
+			return err
+		}
 
-	err = useCase.MessagePublisher.Publish(ctx, exchangeTransaction, "", transactions, 9)
-	if err != nil {
-		return nil, err
-	}
+		err = useCase.MessagePublisher.Publish(ctx, domain.ExchangeTransaction, "", transactions, 9)
+		return err
+	})
 
 	return nil, err
+
 }

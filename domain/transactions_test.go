@@ -42,23 +42,16 @@ func TestValidateTransactions(t *testing.T) {
 
 func testValidateTransactions(t *testing.T, tcName, trsFile, expTrsValResFile string, expErr error) {
 	var trs domain.Transactions
-	err := domain.ReadJSON(trsFile, &trs)
-	if err != nil {
-		t.Fatal("failed to read transactions file")
-	}
-
+	domain.ReadJSON(t, trsFile, &trs)
 	gotTrsValRes, gotErr := trs.ValidateTransactions()
 	var expTrsValRes []domain.TransactionValidateResult
 
 	if *update {
-		domain.CreateJSON(expTrsValResFile, gotTrsValRes)
+		domain.CreateJSON(t, expTrsValResFile, gotTrsValRes)
 		return
 	}
 
-	err = domain.ReadJSON(expTrsValResFile, &expTrsValRes)
-	if err != nil {
-		t.Fatal("failed to read transactions result file")
-	}
+	domain.ReadJSON(t, expTrsValResFile, &expTrsValRes)
 
 	domain.Compare(t, "compare transactions result", expTrsValRes, gotTrsValRes)
 	assert.Equal(t, expErr, gotErr, "expected error should be equal of got error")

@@ -10,23 +10,23 @@ import (
 )
 
 // ReadJSON read json from file and set object
-func ReadJSON(file string, object interface{}) error {
+func ReadJSON(t *testing.T, file string, object any) {
 	b, err := os.ReadFile(filepath.Clean(file))
 	if err != nil {
-		return err
+		t.Fatal("failed to read file")
 	}
 
-	return json.Unmarshal(b, object)
+	json.Unmarshal(b, object)
 
 }
 
-func CreateJSON(file string, object interface{}) (err error) {
+func CreateJSON(t *testing.T, file string, object any) {
 	b, err := json.MarshalIndent(object, "", "\t")
 	if err != nil {
-		return
+		t.Fatal("failed to create file")
 	}
 
-	return os.WriteFile(file, b, 0644)
+	os.WriteFile(file, b, 0644)
 }
 
 func Compare(t *testing.T, description string, exp, got any, opts ...cmp.Option) {

@@ -33,11 +33,7 @@ func TestUserIsValid(t *testing.T) {
 
 func testUserIsValid(t *testing.T, tcName, userFile string, exp error) {
 	var user domain.User
-	err := domain.ReadJSON(userFile, &user)
-	if err != nil {
-		t.Fatal("failed to read user file")
-	}
-
+	domain.ReadJSON(t, userFile, &user)
 	got := user.IsValid()
 	assert.Equal(t, exp, got, "expected error should be equal of got error")
 }
