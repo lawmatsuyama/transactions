@@ -3,9 +3,9 @@ package domain
 import "github.com/sirupsen/logrus"
 
 type User struct {
-	ID     string
-	Name   string
-	Active bool
+	ID     string `json:"_id" bson:"_id"`
+	Name   string `json:"name" bson:"name"`
+	Active bool   `json:"active" bson:"active"`
 }
 
 func (user User) IsValid() error {

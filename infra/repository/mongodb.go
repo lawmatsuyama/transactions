@@ -27,7 +27,7 @@ var defaultPoolConnection *options.ClientOptions = options.Client().
 	SetMaxPoolSize(50)
 
 // Start initialize a connection with database. The opts argument should use to configure a custom pool connection with database.
-func Start(ctx context.Context, opts ...*options.ClientOptions) {
+func Start(ctx context.Context, opts ...*options.ClientOptions) *mongo.Client {
 	clientDB.Options = opts
 	cli, err := GetClientDB(ctx)
 	if err != nil {
@@ -38,6 +38,8 @@ func Start(ctx context.Context, opts ...*options.ClientOptions) {
 	if err != nil {
 		panic(fmt.Sprintf("Cannot ping to mongodb: %v", err))
 	}
+
+	return cli
 }
 
 // GetClientDB returns the DB client connected

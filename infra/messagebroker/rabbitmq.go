@@ -49,10 +49,12 @@ func Start(ctx context.Context, setuper BrokerSetuper) {
 				continue
 			}
 
-			err = setuper.Setup()
-			if err != nil {
-				defaultSleep()
-				continue
+			if setuper != nil {
+				err = setuper.Setup()
+				if err != nil {
+					defaultSleep()
+					continue
+				}
 			}
 
 			select {
@@ -64,6 +66,18 @@ func Start(ctx context.Context, setuper BrokerSetuper) {
 			}
 		}
 	}()
+}
+
+// Shutdown finishes everything
+func Shutdown() {
+	if broker == nil || broker.connection == nil {
+		return
+	}
+
+	err := broker.connection.Close()
+	if err != nil {
+		log.Warn("Failed to close rabbitmq connection")
+	}
 }
 
 func Connect(url string) error {

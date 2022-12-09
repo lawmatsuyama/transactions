@@ -4,7 +4,7 @@ import (
 	"sync"
 )
 
-type Transactions []Transaction
+type Transactions []*Transaction
 
 func (trs Transactions) ValidateTransactions() ([]TransactionValidateResult, error) {
 	chResult := make(chan TransactionValidateResult, len(trs))
@@ -14,7 +14,7 @@ func (trs Transactions) ValidateTransactions() ([]TransactionValidateResult, err
 	}()
 
 	for result := range chResult {
-		if result.Error != nil {
+		if len(result.Errors) > 0 {
 			trsResult = append(trsResult, result)
 		}
 	}
@@ -30,10 +30,10 @@ func (trs Transactions) validateTransactionsConcurrently(chResult chan<- Transac
 	wg := &sync.WaitGroup{}
 	for _, tr := range trs {
 		wg.Add(1)
-		go func(tr Transaction) {
+		go func(tr *Transaction) {
 			defer wg.Done()
-			if err := tr.IsValid(); err != nil {
-				chResult <- TransactionValidateResult{Transaction: tr, Error: err}
+			if listErr := tr.IsValid(); len(listErr) > 0 {
+				chResult <- TransactionValidateResult{Transaction: tr, Errors: listErr}
 			}
 		}(tr)
 	}

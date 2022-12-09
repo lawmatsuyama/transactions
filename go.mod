@@ -22,12 +22,14 @@ replace (
 require (
 	github.com/docker/go-connections v0.4.0
 	github.com/go-chi/chi/v5 v5.0.8
+	github.com/google/uuid v1.3.0
+	github.com/joho/godotenv v1.4.0
+	github.com/joonix/log v0.0.0-20200409080653-9c1d2ceb5f1d
 	github.com/sirupsen/logrus v1.9.0
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.8.0
 	github.com/testcontainers/testcontainers-go v0.16.0
 	go.mongodb.org/mongo-driver v1.11.0
-	gotest.tools v2.2.0+incompatible
 )
 
 require (
@@ -68,7 +70,6 @@ require (
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/gnostic v0.5.5 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0 // indirect

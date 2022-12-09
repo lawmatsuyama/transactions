@@ -12,7 +12,13 @@ type TransactionDB struct {
 	Client *mongo.Client
 }
 
-func (db TransactionDB) Save(ctx context.Context, transactions []domain.Transaction) error {
+func NewTransactionDB(client *mongo.Client) TransactionDB {
+	return TransactionDB{
+		Client: client,
+	}
+}
+
+func (db TransactionDB) Save(ctx context.Context, transactions []*domain.Transaction) error {
 	c := db.Client.Database("account").Collection("transaction")
 	models := bulkInsertModel(transactions)
 	_, err := c.BulkWrite(ctx, models)

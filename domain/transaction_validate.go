@@ -1,6 +1,6 @@
 package domain
 
 type TransactionValidateResult struct {
-	Transaction Transaction
-	Error       error
+	Transaction *Transaction `json:"transaction"`
+	Errors      []string     `json:"errors"`
 }
