@@ -7,8 +7,12 @@
 			],
 			"transaction": {
 				"amount": 14.1,
+				"created_at": "2022-12-08T19-18-48",
 				"description": "test2",
-				"operation": "credit"
+				"id": "",
+				"operation": "credit",
+				"origin": "desktop-web-invalid",
+				"user_id": "f982c57d-7632-40f5-b03e-a582f9a63e16"
 			}
 		},
 		{
@@ -18,8 +22,12 @@
 			],
 			"transaction": {
 				"amount": 0,
+				"created_at": "2022-12-08T19-18-48",
 				"description": "test3",
-				"operation": "debit-invalid"
+				"id": "",
+				"operation": "debit-invalid",
+				"origin": "desktop-web",
+				"user_id": "f982c57d-7632-40f5-b03e-a582f9a63e16"
 			}
 		}
 	]

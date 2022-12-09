@@ -5,27 +5,27 @@
         {
             "description": "test1",
             "amount": 5678.34,
-            "operation_type": "debit"
+            "operation": "debit"
         },
         {
             "description": "test2",
             "amount": 14.1,
-            "operation_type": "credit"
+            "operation": "credit"
         },
         {
             "description": "test3",
             "amount": 14.1,
-            "operation_type": "debit"
+            "operation": "debit"
         },
         {
             "description": "test4",
             "amount": 3333.1,
-            "operation_type": "debit"
+            "operation": "debit"
         },
         {
             "description": "test5",
             "amount": 199.1,
-            "operation_type": "debit"
+            "operation": "debit"
         }
     ]
 }

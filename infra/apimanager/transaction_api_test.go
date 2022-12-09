@@ -149,12 +149,12 @@ func TestGet(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-
+			testGet(t, tc.Name, tc.TransactionsGetRequestFile, tc.TransactionsPagingFile, tc.ExpectedInputGetFile, tc.ExpectedTransactionsGetResponseFile, tc.ErrGet, tc.ExpStatusCode)
 		})
 	}
 }
 
-func testGet(t *testing.T, name, trsGetRequestFile, trsPagFile, expInGetFile, expTrsGetRespFile string, errGet error, status int) {
+func testGet(t *testing.T, name, trsGetRequestFile, trsPagFile, expInGetFile, expTrsGetRespFile string, errGet error, expStatusCode int) {
 	var gotInGet domain.TransactionFilter
 	GetMock = func(ctx context.Context, filter domain.TransactionFilter) (domain.TransactionsPaging, error) {
 		gotInGet = filter
@@ -168,9 +168,9 @@ func testGet(t *testing.T, name, trsGetRequestFile, trsPagFile, expInGetFile, ex
 		gotStatusCode = statusCode
 	}
 
-	var gotResponse apimanager.GenericResponse
+	var gotGetResp apimanager.GenericResponse
 	WriteMock = func(b []byte) (int, error) {
-		err := json.Unmarshal(b, &gotResponse)
+		err := json.Unmarshal(b, &gotGetResp)
 		if err != nil {
 			return 0, nil
 		}
@@ -185,6 +185,21 @@ func testGet(t *testing.T, name, trsGetRequestFile, trsPagFile, expInGetFile, ex
 	}
 
 	transactionAPI := apimanager.NewTransactionAPI(mock{})
-	transactionAPI.Save(mock{}, req)
+	transactionAPI.Get(mock{}, req)
 
+	if *update {
+		domain.CreateJSON(t, expInGetFile, gotInGet)
+		domain.CreateJSON(t, expTrsGetRespFile, gotGetResp)
+		return
+	}
+
+	var expInGet domain.TransactionFilter
+	domain.ReadJSON(t, expInGetFile, &expInGet)
+
+	var expGetResp apimanager.GenericResponse
+	domain.ReadJSON(t, expTrsGetRespFile, &expGetResp)
+
+	assert.Equal(t, expStatusCode, gotStatusCode)
+	domain.Compare(t, "compare input Get", expInGet, gotInGet)
+	domain.Compare(t, "compare Get response", expGetResp, gotGetResp)
 }

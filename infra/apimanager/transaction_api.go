@@ -50,7 +50,7 @@ func (api TransactionAPI) Get(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 	trsPag, err := api.UseCase.Get(ctx, trsReq.ToTransactionsFilter())
 	var response TransactionsGetResponse
-	if err != nil {
+	if err == nil {
 		response = FromTransactionPaging(trsPag)
 	}
 
