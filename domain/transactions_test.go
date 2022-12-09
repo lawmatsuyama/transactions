@@ -3,6 +3,7 @@ package domain_test
 import (
 	"testing"
 
+	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/lawmatsuyama/transactions/domain"
 	"github.com/stretchr/testify/assert"
 )
@@ -53,6 +54,9 @@ func testValidateTransactions(t *testing.T, tcName, trsFile, expTrsValResFile st
 
 	domain.ReadJSON(t, expTrsValResFile, &expTrsValRes)
 
-	domain.Compare(t, "compare transactions result", expTrsValRes, gotTrsValRes)
+	domain.Compare(t, "compare transactions result", expTrsValRes, gotTrsValRes,
+		cmpopts.SortSlices(func(i domain.TransactionValidateResult, j domain.TransactionValidateResult) bool {
+			return i.Transaction.Description < j.Transaction.Description
+		}))
 	assert.Equal(t, expErr, gotErr, "expected error should be equal of got error")
 }

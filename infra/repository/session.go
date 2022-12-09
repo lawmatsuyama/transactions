@@ -36,7 +36,7 @@ func (db SessionControlDB) WithSession(ctx context.Context, f domain.FuncDBSessi
 		if err != nil {
 			errAbort := session.AbortTransaction(sc)
 			if errAbort != nil {
-				return fmt.Errorf("origina error: %w error abort transaction: %w", err, errAbort)
+				return fmt.Errorf("original error: %v error abort transaction: %v", err, errAbort)
 			}
 			return err
 		}
