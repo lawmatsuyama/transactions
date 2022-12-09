@@ -62,7 +62,7 @@ func CloseDB(ctx context.Context) (err error) {
 
 func setClientDB(ctx context.Context) error {
 	uri := dbURI()
-	optURI := options.Client().ApplyURI(uri)
+	optURI := options.Client().ApplyURI(uri).SetDirect(true)
 
 	var err error
 	if len(clientDB.Options) == 0 {

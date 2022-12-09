@@ -28,15 +28,17 @@ func LoggerSetup() {
 }
 
 func StartDependencies(ctxWithCancel context.Context) {
-	messagebroker.Start(ctxWithCancel, nil)
+	brokeSetuper := messagebroker.NewSetuper()
+	messagebroker.Start(ctxWithCancel, brokeSetuper)
 	dbCli := repository.Start(context.Background())
 
 	transactionRepository := repository.NewTransactionDB(dbCli)
 	userRepository := repository.NewUserDB(dbCli)
+	sessionControlRepository := repository.NewSessionControlDB(dbCli)
 
 	publisher := messagebroker.NewMessagePublisher()
 
-	transactionUseCase := usecases.NewTransactionUseCase(transactionRepository, userRepository, publisher)
+	transactionUseCase := usecases.NewTransactionUseCase(transactionRepository, userRepository, publisher, sessionControlRepository)
 
 	transactionAPI := apimanager.NewTransactionAPI(transactionUseCase)
 	handler := apimanager.NewHandler(transactionAPI)

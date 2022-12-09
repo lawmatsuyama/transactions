@@ -17,8 +17,12 @@ type TransactionRepository interface {
 	// GetFromDate(ctx context.Context, date time.Time, page int) ([]Transaction, error)
 }
 
+type SessionControlRepository interface {
+	WithSession(ctx context.Context, f FuncDBSession) error
+}
+
 type MessagePublisher interface {
-	Publish(ctx context.Context, excName, routingKey string, obj interface{}, priority uint8) error
+	Publish(ctx context.Context, excName, routingKey string, obj any, priority uint8) error
 }
 
 type TransactionUseCase interface {

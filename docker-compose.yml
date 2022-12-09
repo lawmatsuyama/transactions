@@ -1,15 +1,14 @@
 version: "3.5"
 services:
   mongodb:
-    image: "mongo:4.0.19"
-    environment:
-      - MONGO_INITDB_DATABASE=account
-      - MONGO_INITDB_ROOT_USERNAME=usercore
-      - MONGO_INITDB_ROOT_PASSWORD=usercore
+    image: bitnami/mongodb:5.0
     ports:
       - "27017:27017"
     volumes:
       - ./db:/docker-entrypoint-initdb.d:ro
+    environment:
+      MONGODB_REPLICA_SET_MODE: primary
+      ALLOW_EMPTY_PASSWORD: 'yes'
   rabbitmq:
     image: "rabbitmq:3-management-alpine"
     ports:
@@ -18,14 +17,3 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
-  redis:
-    image: eqalpha/keydb
-    command:
-      - keydb-server
-      - --active-replica yes
-      - --appendonly yes
-      - --bind 0.0.0.0
-      - --port 6379
-      - --protected-mode no
-    ports:
-      - "6379:6379"
