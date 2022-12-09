@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	limitDocuments int32 = 20
+	limitDocuments int32 = 3
 )
 
 type TransactionDB struct {
@@ -48,7 +48,7 @@ func (db TransactionDB) Get(ctx context.Context, filterTrs domain.TransactionFil
 	filter = filterRange(filter, "amount", filterTrs.AmountGreater, filterTrs.AmountLess, isZeroComparable[float64])
 	page := filterTrs.Page()
 
-	sort := bson.D{bsonE("created_at", 1)}
+	sort := bson.D{bsonE("created_at", 1), bsonE("_id", 1)}
 	opts := options.Find().SetSort(sort).SetBatchSize(limitDocuments).SetMaxTime(time.Second * 20).SetSkip(page).SetLimit(int64(limitDocuments))
 	cur, err := c.Find(ctx, filter, opts)
 
@@ -65,6 +65,11 @@ func (db TransactionDB) Get(ctx context.Context, filterTrs domain.TransactionFil
 	trs := []*domain.Transaction{}
 	err = cur.All(ctx, &trs)
 	if err != nil {
+		return
+	}
+
+	if len(trs) == 0 {
+		err = domain.ErrTransactionsNotFound
 		return
 	}
 
