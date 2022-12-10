@@ -21,6 +21,9 @@ type MessageTest struct {
 }
 
 func TestPublisherConsumerRabbitmq(t *testing.T) {
+	if !*withContainer {
+		return
+	}
 	ctxBase := context.Background()
 	ctx, cancel := context.WithCancel(ctxBase)
 	container, port, err := startRabbitmq(ctx)

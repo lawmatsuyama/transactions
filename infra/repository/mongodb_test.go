@@ -14,6 +14,9 @@ import (
 )
 
 func TestStartMongodb(t *testing.T) {
+	if !*withContainer {
+		return
+	}
 	ctx := context.Background()
 	container, port, err := startMongodb(ctx)
 	if err != nil {

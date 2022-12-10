@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	limitDocuments int32 = 3
+	limitDocuments int32 = 20
 )
 
 type TransactionDB struct {
@@ -42,6 +42,7 @@ func (db TransactionDB) Get(ctx context.Context, filterTrs domain.TransactionFil
 	filter := bson.D{}
 	filter = filterSimple(filter, "_id", filterTrs.ID, isZeroComparable[string])
 	filter = filterSimple(filter, "user_id", filterTrs.UserID, isZeroComparable[string])
+	filter = filterSimple(filter, "description", filterTrs.Description, isZeroComparable[string])
 	filter = filterRange(filter, "created_at", filterTrs.DateFrom, filterTrs.DateTo, isZeroTime)
 	filter = filterSimple(filter, "origin", filterTrs.Origin, isZeroComparable[domain.OriginChannel])
 	filter = filterSimple(filter, "operation_type", filterTrs.OperationType, isZeroComparable[domain.OperationType])
