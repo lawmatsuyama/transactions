@@ -26,11 +26,11 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/joho/godotenv v1.4.0
 	github.com/joonix/log v0.0.0-20200409080653-9c1d2ceb5f1d
+	github.com/rs/cors v1.8.2
 	github.com/sirupsen/logrus v1.9.0
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.8.0
 	github.com/swaggo/http-swagger v1.2.6
-	github.com/swaggo/http-swagger/example/go-chi v0.0.0-20220809182543-c8d62bfd8fdb
 	github.com/swaggo/swag v1.8.8
 	github.com/testcontainers/testcontainers-go v0.16.0
 	go.mongodb.org/mongo-driver v1.11.1
