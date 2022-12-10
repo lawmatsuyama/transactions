@@ -6,18 +6,21 @@ import (
 	"github.com/lawmatsuyama/transactions/domain"
 )
 
+// TransactionSaveRequest represents a request of Save transaction operation
 type TransactionSaveRequest struct {
 	Description string  `json:"description" bson:"description"`
 	Amount      float64 `json:"amount" bson:"amount"`
 	Operation   string  `json:"operation" bson:"operation"`
 }
 
+// TransactionSaveRequest represents a request of Save transaction operation represents a request of Save transaction operation
 type TransactionsSaveRequest struct {
 	UserID        string                   `json:"user_id" bson:"user_id"`
 	OriginChannel string                   `json:"origin_channel" bson:"origin_channel"`
 	Transactions  []TransactionSaveRequest `json:"transactions" bson:"transactions"`
 }
 
+// ToTransactions return a new domain Transactions from TransactionsSaveRequest
 func (trsReq TransactionsSaveRequest) ToTransactions(now time.Time) domain.Transactions {
 	trs := make([]*domain.Transaction, len(trsReq.Transactions))
 	for i, trReq := range trsReq.Transactions {
@@ -37,6 +40,7 @@ type Paging struct {
 	Page int64
 }
 
+// TransactionsGetRequest represents a request of Get transactions operation
 type TransactionsGetRequest struct {
 	ID            string    `json:"_id"`
 	Description   string    `json:"description"`
@@ -50,6 +54,7 @@ type TransactionsGetRequest struct {
 	Paging        *Paging   `json:"paging,omitempty"`
 }
 
+// ToTransactionsFilter return a new domain TransactionsFilter from TransactionsGetRequest
 func (req TransactionsGetRequest) ToTransactionsFilter() domain.TransactionFilter {
 	filter := domain.TransactionFilter{
 		ID:            req.ID,

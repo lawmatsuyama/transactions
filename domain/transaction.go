@@ -7,6 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Transaction represents a transaction of an user
 type Transaction struct {
 	ID            string        `json:"_id" bson:"_id,omitempty"`
 	Description   string        `json:"description" bson:"description"`
@@ -17,10 +18,12 @@ type Transaction struct {
 	CreatedAt     time.Time     `json:"created_at" bson:"created_at"`
 }
 
+// IsAmountZero return true if transaction amount is zero
 func (tr Transaction) IsAmountZero() bool {
 	return tr.Amount == 0
 }
 
+// IsValid check if transaction is valid
 func (tr Transaction) IsValid() []string {
 	listErr := []string{}
 	if tr.IsAmountZero() {
@@ -38,6 +41,7 @@ func (tr Transaction) IsValid() []string {
 	return listErr
 }
 
+// SetID generate and set ID for transaction
 func (tr *Transaction) SetID() {
 	if tr == nil {
 		log.Error("cannot set ID for transaction because transaction is nil")

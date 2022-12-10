@@ -54,7 +54,7 @@ func (useCase TransactionUseCase) Save(ctx context.Context, userID string, trans
 			return err
 		}
 
-		err = useCase.MessagePublisher.Publish(ctx, domain.ExchangeTransaction, "", transactions, 9)
+		err = useCase.MessagePublisher.Publish(ctx, domain.ExchangeTransactionSaved, "", transactions, 9)
 		if err != nil {
 			l.WithError(err).Error("Failed to publish transactions in exchange")
 		}

@@ -12,6 +12,21 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// @title Transactions
+// @version 1.0
+// @description Save and list transactions made by user.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost
+// @BasePath /v1
+
 var (
 	serviceName = "transactions"
 )
@@ -38,7 +53,10 @@ func start() (ctx context.Context, cancel context.CancelFunc) {
 func shutdown(ctx context.Context, cancel context.CancelFunc) {
 	cancel()
 	messagebroker.Shutdown()
-	repository.CloseDB(ctx)
+	err := repository.CloseDB(ctx)
+	if err != nil {
+		log.Warn("Failed to close database")
+	}
 	apimanager.ShutdownAPI()
 	log.WithField("service", serviceName).Info("Service finished")
 }

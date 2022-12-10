@@ -6,8 +6,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// Transactions represents a list of transaction
 type Transactions []*Transaction
 
+// ValidateTransactions check if all transactions are valid
 func (trs Transactions) ValidateTransactions() ([]TransactionSaveResult, error) {
 	chResult := make(chan TransactionSaveResult, len(trs))
 	trsResult := make([]TransactionSaveResult, 0, len(trs))

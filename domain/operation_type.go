@@ -1,5 +1,6 @@
 package domain
 
+// OperationType represents an enum of operation type
 type OperationType string
 
 const (
@@ -7,6 +8,7 @@ const (
 	CreditOperation OperationType = "credit"
 )
 
+// IsValid check if operation type is valid
 func (oper OperationType) IsValid() bool {
 	switch oper {
 	case DebitOperation, CreditOperation:

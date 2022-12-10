@@ -5,20 +5,24 @@ import (
 	"net/http"
 )
 
+// ErrorTransaction represents an error and implements error interface
 type ErrorTransaction struct {
 	ErrorOrigin error
 	StatusCode  int
 }
 
+// Error return a string error
 func (err ErrorTransaction) Error() string {
 	return err.ErrorOrigin.Error()
 }
 
+// Error return an http status code
 func (err ErrorTransaction) Status() int {
 	return err.StatusCode
 }
 
-func ErrorTransactionToError(err error) ErrorTransaction {
+// ErrorToErrorTransaction converts error into ErrorTransaction
+func ErrorToErrorTransaction(err error) ErrorTransaction {
 	errTr, ok := err.(ErrorTransaction)
 	if ok {
 		return errTr

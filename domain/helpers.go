@@ -16,7 +16,10 @@ func ReadJSON(t *testing.T, file string, object any) {
 		t.Fatal("failed to read file")
 	}
 
-	json.Unmarshal(b, object)
+	err = json.Unmarshal(b, object)
+	if err != nil {
+		t.Fatal("failed to unmarshal object")
+	}
 }
 
 // Read read json from file and return bytes
@@ -28,15 +31,21 @@ func Read(t *testing.T, file string) []byte {
 	return b
 }
 
+// CreateJSON creates a json file using the given object
 func CreateJSON(t *testing.T, file string, object any) {
 	b, err := json.MarshalIndent(object, "", "\t")
 	if err != nil {
 		t.Fatal("failed to create file")
 	}
 
-	os.WriteFile(file, b, 0644)
+	/* #nosec */
+	err = os.WriteFile(file, b, 0644)
+	if err != nil {
+		t.Fatal("failed to write json file")
+	}
 }
 
+// Compare it compares two objects and check if they are equals
 func Compare(t *testing.T, description string, exp, got any, opts ...cmp.Option) {
 	d := cmp.Diff(exp, got, opts...)
 	if len(d) > 0 {

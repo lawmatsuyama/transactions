@@ -4,11 +4,13 @@ import (
 	"github.com/lawmatsuyama/transactions/domain"
 )
 
+// GenericResponse represents a generic response to be used by all api operations
 type GenericResponse struct {
 	Error  string `json:"error,omitempty"`
 	Result any    `json:"result"`
 }
 
+// Transaction represents a transaction to be used in operations response
 type Transaction struct {
 	ID          string  `json:"id"`
 	UserID      string  `json:"user_id"`
@@ -19,11 +21,13 @@ type Transaction struct {
 	CreatedAt   string  `json:"created_at"`
 }
 
+// TransactionSaveResponse represents a response of Save transaction operation
 type TransactionSaveResponse struct {
 	Transaction Transaction `json:"transaction"`
 	Errors      []string    `json:"errors"`
 }
 
+// FromTransactionSaveResult returns a new list of TransactionSaveResponse from TransactionSaveResult
 func FromTransactionSaveResult(trsResult []domain.TransactionSaveResult) []TransactionSaveResponse {
 	trs := make([]TransactionSaveResponse, len(trsResult))
 	for i, trResult := range trsResult {
@@ -43,11 +47,13 @@ func FromTransactionSaveResult(trsResult []domain.TransactionSaveResult) []Trans
 	return trs
 }
 
+// TransactionsGetResponse represents a response of Get transactions operation
 type TransactionsGetResponse struct {
 	Transactions []Transaction `json:"transactions"`
 	Paging       *Paging       `json:"paging"`
 }
 
+// FromTransactionPaging returns a new TransactionsGetResponse from domain TransactionsPaging
 func FromTransactionPaging(trsPag domain.TransactionsPaging) TransactionsGetResponse {
 	trs := make([]Transaction, len(trsPag.Transactions))
 	for i, tr := range trsPag.Transactions {

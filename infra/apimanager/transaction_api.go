@@ -12,6 +12,7 @@ import (
 
 var Now = time.Now()
 
+// TransactionAPI represents an API for transaction
 type TransactionAPI struct {
 	UseCase domain.TransactionUseCase
 }
@@ -22,6 +23,7 @@ func NewTransactionAPI(useCase domain.TransactionUseCase) TransactionAPI {
 	}
 }
 
+// Save is an operation of transaction api to save transactions in the application.
 func (api TransactionAPI) Save(w http.ResponseWriter, r *http.Request) {
 	var trsReq TransactionsSaveRequest
 	err := json.NewDecoder(r.Body).Decode(&trsReq)
@@ -61,7 +63,7 @@ func handleResponse(w http.ResponseWriter, r *http.Request, in any, err error) {
 	var errStr string
 	statusCode := http.StatusOK
 	if err != nil {
-		errTr := domain.ErrorTransactionToError(err)
+		errTr := domain.ErrorToErrorTransaction(err)
 		errStr = errTr.Error()
 		statusCode = errTr.Status()
 	}

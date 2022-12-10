@@ -1,5 +1,6 @@
 package domain
 
+// OriginChannel represents origin channel
 type OriginChannel string
 
 const (
@@ -8,6 +9,7 @@ const (
 	MobileIos     OriginChannel = "mobile-ios"
 )
 
+// IsValid check if origin channel is valid
 func (origin OriginChannel) IsValid() bool {
 	switch origin {
 	case DesktopWeb, MobileAndroid, MobileIos:

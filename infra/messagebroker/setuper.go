@@ -13,15 +13,15 @@ func NewSetuper() Setuper {
 
 func (setup Setuper) Setup() error {
 	arg := amqp.Table{"x-max-priority": 9}
-	_, err := CreateQueue(domain.QueueSaved, true, arg)
+	_, err := CreateQueue(domain.QueueTransactionSaved, true, arg)
 	if err != nil {
 		return err
 	}
 
-	err = CreateExchange(domain.ExchangeTransaction, "fanout", nil)
+	err = CreateExchange(domain.ExchangeTransactionSaved, "fanout", nil)
 	if err != nil {
 		return err
 	}
 
-	return BindQueueExchange(domain.QueueSaved, domain.ExchangeTransaction, "transaction-service")
+	return BindQueueExchange(domain.QueueTransactionSaved, domain.ExchangeTransactionSaved, "transaction-service")
 }
