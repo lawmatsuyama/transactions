@@ -1,5 +1,12 @@
 basePath: /transactions
 definitions:
+  apimanager.GenericResponse-apimanager_TransactionsGetResponse:
+    properties:
+      error:
+        type: string
+      result:
+        $ref: '#/definitions/apimanager.TransactionsGetResponse'
+    type: object
   apimanager.GenericResponse-array_apimanager_TransactionSaveResponse:
     properties:
       error:
@@ -8,13 +15,6 @@ definitions:
         items:
           $ref: '#/definitions/apimanager.TransactionSaveResponse'
         type: array
-    type: object
-  apimanager.GenericResponse-domain_TransactionsPaging:
-    properties:
-      error:
-        type: string
-      result:
-        $ref: '#/definitions/domain.TransactionsPaging'
     type: object
   apimanager.GenericResponse-string:
     properties:
@@ -88,6 +88,15 @@ definitions:
       user_id:
         type: string
     type: object
+  apimanager.TransactionsGetResponse:
+    properties:
+      paging:
+        $ref: '#/definitions/apimanager.Paging'
+      transactions:
+        items:
+          $ref: '#/definitions/apimanager.Transaction'
+        type: array
+    type: object
   apimanager.TransactionsSaveRequest:
     properties:
       origin_channel:
@@ -98,57 +107,6 @@ definitions:
         type: array
       user_id:
         type: string
-    type: object
-  domain.OperationType:
-    enum:
-    - debit
-    - credit
-    type: string
-    x-enum-varnames:
-    - DebitOperation
-    - CreditOperation
-  domain.OriginChannel:
-    enum:
-    - desktop-web
-    - mobile-android
-    - mobile-ios
-    type: string
-    x-enum-varnames:
-    - DesktopWeb
-    - MobileAndroid
-    - MobileIos
-  domain.Paging:
-    properties:
-      next_page:
-        type: integer
-      page:
-        type: integer
-    type: object
-  domain.Transaction:
-    properties:
-      _id:
-        type: string
-      amount:
-        type: number
-      created_at:
-        type: string
-      description:
-        type: string
-      operation_type:
-        $ref: '#/definitions/domain.OperationType'
-      origin:
-        $ref: '#/definitions/domain.OriginChannel'
-      user_id:
-        type: string
-    type: object
-  domain.TransactionsPaging:
-    properties:
-      paging:
-        $ref: '#/definitions/domain.Paging'
-      transactions:
-        items:
-          $ref: '#/definitions/domain.Transaction'
-        type: array
     type: object
 host: localhost:8080
 info:
@@ -178,7 +136,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/apimanager.GenericResponse-domain_TransactionsPaging'
+            $ref: '#/definitions/apimanager.GenericResponse-apimanager_TransactionsGetResponse'
         "400":
           description: Bad Request
           schema:

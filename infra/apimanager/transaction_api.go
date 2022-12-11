@@ -59,7 +59,7 @@ func (api TransactionAPI) Save(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			transactions_get_request			body		TransactionsGetRequest								true	"Transactions Get Request"
-//	@Success		200				{object}	apimanager.GenericResponse[domain.TransactionsPaging]
+//	@Success		200				{object}	apimanager.GenericResponse[TransactionsGetResponse]
 //	@Failure		400				{object}	apimanager.GenericResponse[string]
 //	@Failure		404				{object}	apimanager.GenericResponse[string]
 //	@Router			/v1/get [post]

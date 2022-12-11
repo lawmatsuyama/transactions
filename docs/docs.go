@@ -48,7 +48,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/apimanager.GenericResponse-domain_TransactionsPaging"
+                            "$ref": "#/definitions/apimanager.GenericResponse-apimanager_TransactionsGetResponse"
                         }
                     },
                     "400": {
@@ -114,6 +114,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "apimanager.GenericResponse-apimanager_TransactionsGetResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/apimanager.TransactionsGetResponse"
+                }
+            }
+        },
         "apimanager.GenericResponse-array_apimanager_TransactionSaveResponse": {
             "type": "object",
             "properties": {
@@ -125,17 +136,6 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/apimanager.TransactionSaveResponse"
                     }
-                }
-            }
-        },
-        "apimanager.GenericResponse-domain_TransactionsPaging": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "type": "string"
-                },
-                "result": {
-                    "$ref": "#/definitions/domain.TransactionsPaging"
                 }
             }
         },
@@ -250,6 +250,20 @@ const docTemplate = `{
                 }
             }
         },
+        "apimanager.TransactionsGetResponse": {
+            "type": "object",
+            "properties": {
+                "paging": {
+                    "$ref": "#/definitions/apimanager.Paging"
+                },
+                "transactions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apimanager.Transaction"
+                    }
+                }
+            }
+        },
         "apimanager.TransactionsSaveRequest": {
             "type": "object",
             "properties": {
@@ -264,81 +278,6 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "string"
-                }
-            }
-        },
-        "domain.OperationType": {
-            "type": "string",
-            "enum": [
-                "debit",
-                "credit"
-            ],
-            "x-enum-varnames": [
-                "DebitOperation",
-                "CreditOperation"
-            ]
-        },
-        "domain.OriginChannel": {
-            "type": "string",
-            "enum": [
-                "desktop-web",
-                "mobile-android",
-                "mobile-ios"
-            ],
-            "x-enum-varnames": [
-                "DesktopWeb",
-                "MobileAndroid",
-                "MobileIos"
-            ]
-        },
-        "domain.Paging": {
-            "type": "object",
-            "properties": {
-                "next_page": {
-                    "type": "integer"
-                },
-                "page": {
-                    "type": "integer"
-                }
-            }
-        },
-        "domain.Transaction": {
-            "type": "object",
-            "properties": {
-                "_id": {
-                    "type": "string"
-                },
-                "amount": {
-                    "type": "number"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "operation_type": {
-                    "$ref": "#/definitions/domain.OperationType"
-                },
-                "origin": {
-                    "$ref": "#/definitions/domain.OriginChannel"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "domain.TransactionsPaging": {
-            "type": "object",
-            "properties": {
-                "paging": {
-                    "$ref": "#/definitions/domain.Paging"
-                },
-                "transactions": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Transaction"
-                    }
                 }
             }
         }
