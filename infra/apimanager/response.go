@@ -1,6 +1,8 @@
 package apimanager
 
 import (
+	"time"
+
 	"github.com/lawmatsuyama/transactions/domain"
 )
 
@@ -39,7 +41,7 @@ func FromTransactionSaveResult(trsResult []domain.TransactionSaveResult) []Trans
 				Description: trResult.Transaction.Description,
 				Amount:      trResult.Transaction.Amount,
 				Operation:   string(trResult.Transaction.OperationType),
-				CreatedAt:   trResult.Transaction.CreatedAt.Format("2006-01-02T15-04-05"),
+				CreatedAt:   domain.TimeSaoPaulo(trResult.Transaction.CreatedAt).Format(time.RFC3339),
 			},
 			Errors: trResult.Errors,
 		}
@@ -64,7 +66,7 @@ func FromTransactionPaging(trsPag domain.TransactionsPaging) TransactionsGetResp
 			Amount:      tr.Amount,
 			Operation:   string(tr.OperationType),
 			Origin:      string(tr.Origin),
-			CreatedAt:   tr.CreatedAt.Format("2006-01-02T15-04-05"),
+			CreatedAt:   domain.TimeSaoPaulo(tr.CreatedAt).Format(time.RFC3339),
 		}
 	}
 

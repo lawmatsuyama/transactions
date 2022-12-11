@@ -24,6 +24,10 @@ func (p *Paging) SetNextPage(numTransactions int) {
 		return
 	}
 
+	if p.Page <= 0 {
+		p.Page = 1
+	}
+
 	if int64(numTransactions) >= LimitTransactionsByPage {
 		nextPage := p.Page + 1
 		p.NextPage = &nextPage
@@ -58,7 +62,7 @@ func (trs *TransactionsPaging) SetNextPaging() {
 	}
 
 	if trs.Paging == nil {
-		trs.Paging = &Paging{Page: 1}
+		trs.Paging = &Paging{}
 	}
 
 	trs.Paging.SetNextPage(len(trs.Transactions))

@@ -49,9 +49,9 @@ func (tr *Transaction) SetID() {
 	}
 
 	if tr.Description != "" {
-		tr.ID = fmt.Sprintf("%s-%s-%s-%s-%s-%s", tr.UserID, tr.OperationType, tr.Origin, tr.CreatedAt.Format("2006-01-02"), tr.Description, UUID.Generate())
+		tr.ID = fmt.Sprintf("%s-%s-%s-%s-%s-%s", tr.UserID, tr.OperationType, tr.Origin, TimeSaoPaulo(tr.CreatedAt).Format("2006-01-02"), tr.Description, UUID.Generate())
 		return
 	}
 
-	tr.ID = fmt.Sprintf("%s-%s-%s-%s-%s", tr.UserID, tr.OperationType, tr.Origin, tr.CreatedAt.Format("2006-01-02"), UUID.Generate())
+	tr.ID = fmt.Sprintf("%s-%s-%s-%s-%s", tr.UserID, tr.OperationType, tr.Origin, TimeSaoPaulo(tr.CreatedAt).Format("2006-01-02"), UUID.Generate())
 }

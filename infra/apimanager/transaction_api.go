@@ -4,13 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"time"
 
 	"github.com/lawmatsuyama/transactions/domain"
 	"github.com/sirupsen/logrus"
 )
-
-var Now = time.Now()
 
 // TransactionAPI represents an API for transaction
 type TransactionAPI struct {
@@ -44,7 +41,7 @@ func (api TransactionAPI) Save(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
-	trsResult, err := api.UseCase.Save(ctx, trsReq.UserID, trsReq.ToTransactions(Now))
+	trsResult, err := api.UseCase.Save(ctx, trsReq.UserID, trsReq.ToTransactions(domain.Now()))
 	if err != nil {
 		handleResponse(w, r, FromTransactionSaveResult(trsResult), err)
 		return

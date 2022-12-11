@@ -74,7 +74,10 @@ func TestSave(t *testing.T) {
 }
 
 func testSave(t *testing.T, name, trsFile, trsResultFile, expInSaveFile, expTrsResultFile string, errSave, errWrite error, expStatusCode int) {
-	apimanager.Now = time.Date(2022, 10, 1, 10, 0, 0, 0, time.UTC)
+	domain.Now = func() time.Time {
+		return domain.TimeSaoPaulo(time.Date(2022, 10, 1, 10, 0, 0, 0, time.UTC))
+	}
+
 	var gotInputSave InputTestSupport
 	SaveMock = func(ctx context.Context, userID string, transactions domain.Transactions) ([]domain.TransactionSaveResult, error) {
 		gotInputSave = InputTestSupport{UserID: userID, Transactions: transactions}
