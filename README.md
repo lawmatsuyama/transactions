@@ -1,6 +1,11 @@
 # transactions
 
 API to save and list user transactions.
+This API was build using:
+- Go language
+- Mongodb as nosql database to record transactions
+- Rabbitmq as event bus to notify transactions saved
+- API REST
 
 ## How to start API
 
@@ -104,3 +109,22 @@ The `origin_channel` field accept the follow values:
 - debit
 - credit
 
+`user_id` must exists on database (mongodb). For this project, there is 3 default user_id:
+- 74211f47-9c6f-4648-88a3-cb7d0614b5fe
+- 52814c2d-657b-4e7b-be5c-9f28e59253f8
+- 355daea3-bfdc-41d5-8ecf-c9bcd21f4dbf (this one is setted as disabled)
+
+
+# Check transactions in mongodb
+Mongodb is running on the port 27017. It's a replica set with only one container to deal with transaction and session. You can access using any mongodb client passing URI: 
+- mongodb://mongodb:27017
+- mongodb://localhost:27017
+
+There is an `account` database with `transaction` and `user` collection
+
+# Check rabbitmq messages
+You can access rabbitmq console in any browser with url http://localhost:15672
+user: guest
+password: guest
+
+There is an fanout exchange EXC.TRANSACTION.SAVED and a queue QUEUE.TRANSACTION.SAVED receiving notifications of transactions saved. 
