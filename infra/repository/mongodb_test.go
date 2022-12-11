@@ -14,7 +14,7 @@ import (
 )
 
 func TestStartMongodb(t *testing.T) {
-	if !*withContainer {
+	if !*integration {
 		return
 	}
 	ctx := context.Background()

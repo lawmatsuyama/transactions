@@ -2,4 +2,4 @@ package repository_test
 
 import "flag"
 
-var withContainer = flag.Bool("container", false, "execute tests with testcontainer")
+var integration = flag.Bool("integration", false, "execute integration test")

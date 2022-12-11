@@ -17,6 +17,9 @@ import (
 
 func TestApiManagerShouldStartAndShutdownOk(t *testing.T) {
 	t.Run("01_should_start_and_shutdown_ok", func(t *testing.T) {
+		if !*integration {
+			return
+		}
 		defer t.Cleanup(func() {
 			domain.CleanupWaitGroup()
 		})
@@ -43,6 +46,9 @@ func TestApiManagerShouldStartAndShutdownOk(t *testing.T) {
 
 func TestApiManagerShouldStartAndGracefulShutdownOk(t *testing.T) {
 	t.Run("02_should_start_and_graceful_shutdown_ok", func(t *testing.T) {
+		if !*integration {
+			return
+		}
 		defer t.Cleanup(func() {
 			domain.CleanupWaitGroup()
 		})

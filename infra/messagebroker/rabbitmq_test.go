@@ -21,7 +21,7 @@ type MessageTest struct {
 }
 
 func TestPublisherConsumerRabbitmq(t *testing.T) {
-	if !*withContainer {
+	if !*integration {
 		return
 	}
 	ctxBase := context.Background()
