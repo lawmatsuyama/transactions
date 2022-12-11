@@ -1,7 +1,7 @@
 # transactions
 
 API to save and list user transactions.
-This API was build using:
+This API was built using:
 - Go language
 - Mongodb as nosql database to record transactions
 - Rabbitmq as event bus to notify transactions saved
