@@ -126,14 +126,14 @@ The `origin_channel` field accept the follow values:
 - 355daea3-bfdc-41d5-8ecf-c9bcd21f4dbf (this one is setted as disabled)
 
 
-# Check transactions in mongodb
+## Check transactions in mongodb
 Mongodb is running on the port 27017. It's a replica set with only one container to deal with transaction and session. You can access using any mongodb client passing URI: 
 - mongodb://mongodb:27017
 - mongodb://localhost:27017
 
 There is an `account` database with `transaction` and `user` collection
 
-# Check rabbitmq messages
+## Check rabbitmq messages
 You can access rabbitmq console in any browser with url http://localhost:15672
 user: guest
 password: guest
