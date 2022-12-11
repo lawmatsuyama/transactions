@@ -41,19 +41,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/apimanager.GenericResponse"
+                            "$ref": "#/definitions/apimanager.GenericResponse-domain_TransactionsPaging"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apimanager.GenericResponse"
+                            "$ref": "#/definitions/apimanager.GenericResponse-string"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/apimanager.GenericResponse"
+                            "$ref": "#/definitions/apimanager.GenericResponse-string"
                         }
                     }
                 }
@@ -87,19 +87,19 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/apimanager.GenericResponse"
+                            "$ref": "#/definitions/apimanager.GenericResponse-string"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/apimanager.GenericResponse"
+                            "$ref": "#/definitions/apimanager.GenericResponse-array_apimanager_TransactionSaveResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/apimanager.GenericResponse"
+                            "$ref": "#/definitions/apimanager.GenericResponse-array_apimanager_TransactionSaveResponse"
                         }
                     }
                 }
@@ -107,13 +107,40 @@
         }
     },
     "definitions": {
-        "apimanager.GenericResponse": {
+        "apimanager.GenericResponse-array_apimanager_TransactionSaveResponse": {
             "type": "object",
             "properties": {
                 "error": {
                     "type": "string"
                 },
-                "result": {}
+                "result": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apimanager.TransactionSaveResponse"
+                    }
+                }
+            }
+        },
+        "apimanager.GenericResponse-domain_TransactionsPaging": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/domain.TransactionsPaging"
+                }
+            }
+        },
+        "apimanager.GenericResponse-string": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "string"
+                }
             }
         },
         "apimanager.Paging": {
@@ -124,6 +151,32 @@
                 },
                 "page": {
                     "type": "integer"
+                }
+            }
+        },
+        "apimanager.Transaction": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "operation": {
+                    "type": "string"
+                },
+                "origin": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
                 }
             }
         },
@@ -138,6 +191,20 @@
                 },
                 "operation": {
                     "type": "string"
+                }
+            }
+        },
+        "apimanager.TransactionSaveResponse": {
+            "type": "object",
+            "properties": {
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "transaction": {
+                    "$ref": "#/definitions/apimanager.Transaction"
                 }
             }
         },
@@ -180,8 +247,7 @@
             "type": "object",
             "properties": {
                 "origin_channel": {
-                    "type": "string",
-                    "enum": [ "desktop-web", "mobile-android", "mobile-ios"]
+                    "type": "string"
                 },
                 "transactions": {
                     "type": "array",
@@ -191,6 +257,81 @@
                 },
                 "user_id": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.OperationType": {
+            "type": "string",
+            "enum": [
+                "debit",
+                "credit"
+            ],
+            "x-enum-varnames": [
+                "DebitOperation",
+                "CreditOperation"
+            ]
+        },
+        "domain.OriginChannel": {
+            "type": "string",
+            "enum": [
+                "desktop-web",
+                "mobile-android",
+                "mobile-ios"
+            ],
+            "x-enum-varnames": [
+                "DesktopWeb",
+                "MobileAndroid",
+                "MobileIos"
+            ]
+        },
+        "domain.Paging": {
+            "type": "object",
+            "properties": {
+                "next_page": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                }
+            }
+        },
+        "domain.Transaction": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "amount": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "operation_type": {
+                    "$ref": "#/definitions/domain.OperationType"
+                },
+                "origin": {
+                    "$ref": "#/definitions/domain.OriginChannel"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.TransactionsPaging": {
+            "type": "object",
+            "properties": {
+                "paging": {
+                    "$ref": "#/definitions/domain.Paging"
+                },
+                "transactions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Transaction"
+                    }
                 }
             }
         }

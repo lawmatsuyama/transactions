@@ -91,7 +91,7 @@ func testSave(t *testing.T, name, trsFile, trsResultFile, expInSaveFile, expTrsR
 		gotStatusCode = statusCode
 	}
 
-	var gotTrsResult apimanager.GenericResponse
+	var gotTrsResult apimanager.GenericResponse[any]
 	WriteMock = func(b []byte) (int, error) {
 		err := json.Unmarshal(b, &gotTrsResult)
 		if err != nil {
@@ -119,7 +119,7 @@ func testSave(t *testing.T, name, trsFile, trsResultFile, expInSaveFile, expTrsR
 	var expInSave InputTestSupport
 	domain.ReadJSON(t, expInSaveFile, &expInSave)
 
-	var expTrsResult apimanager.GenericResponse
+	var expTrsResult apimanager.GenericResponse[any]
 	domain.ReadJSON(t, expTrsResultFile, &expTrsResult)
 
 	assert.Equal(t, expStatusCode, gotStatusCode)
@@ -171,7 +171,7 @@ func testGet(t *testing.T, name, trsGetRequestFile, trsPagFile, expInGetFile, ex
 		gotStatusCode = statusCode
 	}
 
-	var gotGetResp apimanager.GenericResponse
+	var gotGetResp apimanager.GenericResponse[any]
 	WriteMock = func(b []byte) (int, error) {
 		err := json.Unmarshal(b, &gotGetResp)
 		if err != nil {
@@ -199,7 +199,7 @@ func testGet(t *testing.T, name, trsGetRequestFile, trsPagFile, expInGetFile, ex
 	var expInGet domain.TransactionFilter
 	domain.ReadJSON(t, expInGetFile, &expInGet)
 
-	var expGetResp apimanager.GenericResponse
+	var expGetResp apimanager.GenericResponse[any]
 	domain.ReadJSON(t, expTrsGetRespFile, &expGetResp)
 
 	assert.Equal(t, expStatusCode, gotStatusCode)

@@ -1,10 +1,27 @@
 basePath: /transactions
 definitions:
-  apimanager.GenericResponse:
+  apimanager.GenericResponse-array_apimanager_TransactionSaveResponse:
     properties:
       error:
         type: string
-      result: {}
+      result:
+        items:
+          $ref: '#/definitions/apimanager.TransactionSaveResponse'
+        type: array
+    type: object
+  apimanager.GenericResponse-domain_TransactionsPaging:
+    properties:
+      error:
+        type: string
+      result:
+        $ref: '#/definitions/domain.TransactionsPaging'
+    type: object
+  apimanager.GenericResponse-string:
+    properties:
+      error:
+        type: string
+      result:
+        type: string
     type: object
   apimanager.Paging:
     properties:
@@ -12,6 +29,23 @@ definitions:
         type: integer
       page:
         type: integer
+    type: object
+  apimanager.Transaction:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      operation:
+        type: string
+      origin:
+        type: string
+      user_id:
+        type: string
     type: object
   apimanager.TransactionSaveRequest:
     properties:
@@ -21,6 +55,15 @@ definitions:
         type: string
       operation:
         type: string
+    type: object
+  apimanager.TransactionSaveResponse:
+    properties:
+      errors:
+        items:
+          type: string
+        type: array
+      transaction:
+        $ref: '#/definitions/apimanager.Transaction'
     type: object
   apimanager.TransactionsGetRequest:
     properties:
@@ -49,13 +92,63 @@ definitions:
     properties:
       origin_channel:
         type: string
-        enum: [ "desktop-web", "mobile-android", "mobile-ios"]
       transactions:
         items:
           $ref: '#/definitions/apimanager.TransactionSaveRequest'
         type: array
       user_id:
         type: string
+    type: object
+  domain.OperationType:
+    enum:
+    - debit
+    - credit
+    type: string
+    x-enum-varnames:
+    - DebitOperation
+    - CreditOperation
+  domain.OriginChannel:
+    enum:
+    - desktop-web
+    - mobile-android
+    - mobile-ios
+    type: string
+    x-enum-varnames:
+    - DesktopWeb
+    - MobileAndroid
+    - MobileIos
+  domain.Paging:
+    properties:
+      next_page:
+        type: integer
+      page:
+        type: integer
+    type: object
+  domain.Transaction:
+    properties:
+      _id:
+        type: string
+      amount:
+        type: number
+      created_at:
+        type: string
+      description:
+        type: string
+      operation_type:
+        $ref: '#/definitions/domain.OperationType'
+      origin:
+        $ref: '#/definitions/domain.OriginChannel'
+      user_id:
+        type: string
+    type: object
+  domain.TransactionsPaging:
+    properties:
+      paging:
+        $ref: '#/definitions/domain.Paging'
+      transactions:
+        items:
+          $ref: '#/definitions/domain.Transaction'
+        type: array
     type: object
 host: localhost:8080
 info:
@@ -85,15 +178,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/apimanager.GenericResponse'
+            $ref: '#/definitions/apimanager.GenericResponse-domain_TransactionsPaging'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apimanager.GenericResponse'
+            $ref: '#/definitions/apimanager.GenericResponse-string'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/apimanager.GenericResponse'
+            $ref: '#/definitions/apimanager.GenericResponse-string'
       summary: API to get transactions in the application.
       tags:
       - transaction
@@ -116,15 +209,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/apimanager.GenericResponse'
+            $ref: '#/definitions/apimanager.GenericResponse-string'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/apimanager.GenericResponse'
+            $ref: '#/definitions/apimanager.GenericResponse-array_apimanager_TransactionSaveResponse'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/apimanager.GenericResponse'
+            $ref: '#/definitions/apimanager.GenericResponse-array_apimanager_TransactionSaveResponse'
       summary: API to save transactions in the application.
       tags:
       - transaction

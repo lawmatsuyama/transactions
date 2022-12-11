@@ -29,15 +29,15 @@ func NewTransactionAPI(useCase domain.TransactionUseCase) TransactionAPI {
 //	@Accept			json
 //	@Produce		json
 //	@Param			transactions_save_request			body		TransactionsSaveRequest								true	"Transactions Save Request"
-//	@Success		200				{object}	apimanager.GenericResponse
-//	@Failure		400				{object}	apimanager.GenericResponse
-//	@Failure		404				{object}	apimanager.GenericResponse
+//	@Success		200				{object}	apimanager.GenericResponse[string]
+//	@Failure		400				{object}	apimanager.GenericResponse[[]TransactionSaveResponse]
+//	@Failure		404				{object}	apimanager.GenericResponse[[]TransactionSaveResponse]
 //	@Router			/v1/save [post]
 func (api TransactionAPI) Save(w http.ResponseWriter, r *http.Request) {
 	var trsReq TransactionsSaveRequest
 	err := json.NewDecoder(r.Body).Decode(&trsReq)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		handleResponse[*string](w, r, nil, domain.ErrInvalidTransaction)
 		return
 	}
 
@@ -49,7 +49,6 @@ func (api TransactionAPI) Save(w http.ResponseWriter, r *http.Request) {
 	}
 
 	handleResponse(w, r, "Save transactions successfully", err)
-
 }
 
 // Get godoc
@@ -60,22 +59,22 @@ func (api TransactionAPI) Save(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			transactions_get_request			body		TransactionsGetRequest								true	"Transactions Get Request"
-//	@Success		200				{object}	apimanager.GenericResponse
-//	@Failure		400				{object}	apimanager.GenericResponse
-//	@Failure		404				{object}	apimanager.GenericResponse
+//	@Success		200				{object}	apimanager.GenericResponse[domain.TransactionsPaging]
+//	@Failure		400				{object}	apimanager.GenericResponse[string]
+//	@Failure		404				{object}	apimanager.GenericResponse[string]
 //	@Router			/v1/get [post]
 func (api TransactionAPI) Get(w http.ResponseWriter, r *http.Request) {
 	var trsReq TransactionsGetRequest
 	err := json.NewDecoder(r.Body).Decode(&trsReq)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		handleResponse[*string](w, r, nil, domain.ErrInvalidTransaction)
 		return
 	}
 
 	ctx := context.Background()
 	trsPage, err := api.UseCase.Get(ctx, trsReq.ToTransactionsFilter())
 	if err != nil {
-		handleResponse(w, r, nil, err)
+		handleResponse[*string](w, r, nil, err)
 		return
 	}
 
@@ -83,7 +82,7 @@ func (api TransactionAPI) Get(w http.ResponseWriter, r *http.Request) {
 	handleResponse(w, r, response, err)
 }
 
-func handleResponse(w http.ResponseWriter, r *http.Request, in any, err error) {
+func handleResponse[T any](w http.ResponseWriter, r *http.Request, in T, err error) {
 	var errStr string
 	statusCode := http.StatusOK
 	if err != nil {
@@ -92,7 +91,7 @@ func handleResponse(w http.ResponseWriter, r *http.Request, in any, err error) {
 		statusCode = errTr.Status()
 	}
 
-	genRes := GenericResponse{
+	genRes := GenericResponse[T]{
 		Error:  errStr,
 		Result: in,
 	}

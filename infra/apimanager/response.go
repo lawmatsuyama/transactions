@@ -7,9 +7,9 @@ import (
 )
 
 // GenericResponse represents a generic response to be used by all api operations
-type GenericResponse struct {
+type GenericResponse[T any] struct {
 	Error  string `json:"error,omitempty"`
-	Result any    `json:"result"`
+	Result T      `json:"result"`
 }
 
 // Transaction represents a transaction to be used in operations response
