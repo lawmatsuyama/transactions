@@ -48,7 +48,6 @@ func (db TransactionDB) Get(ctx context.Context, filterTrs domain.TransactionFil
 	filter = filterSimple(filter, "origin", filterTrs.Origin, isZeroComparable[domain.OriginChannel])
 	filter = filterSimple(filter, "operation_type", filterTrs.OperationType, isZeroComparable[domain.OperationType])
 	filter = filterRange(filter, "amount", filterTrs.AmountGreater, filterTrs.AmountLess, isZeroComparable[float64])
-	page := filterTrs.Paging.CurrentPage()
 
 	sort := bson.D{bsonE("created_at", 1), bsonE("_id", 1)}
 	opts := options.Find().
@@ -77,17 +76,6 @@ func (db TransactionDB) Get(ctx context.Context, filterTrs domain.TransactionFil
 		err = domain.ErrUnknow
 		return
 	}
-
-	// if len(trs) == 0 {
-	// 	err = domain.ErrTransactionsNotFound
-	// 	return
-	// }
-
-	// if len(trs) >= int(limitDocuments) {
-	// 	trsPage.Paging = &domain.Paging{
-	// 		Page: page + int64(len(trs)),
-	// 	}
-	// }
 
 	return trs, err
 }
