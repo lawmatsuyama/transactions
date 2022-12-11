@@ -119,6 +119,9 @@
         "apimanager.Paging": {
             "type": "object",
             "properties": {
+                "next_page": {
+                    "type": "integer"
+                },
                 "page": {
                     "type": "integer"
                 }
@@ -177,7 +180,8 @@
             "type": "object",
             "properties": {
                 "origin_channel": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [ "desktop-web", "mobile-android", "mobile-ios"]
                 },
                 "transactions": {
                     "type": "array",

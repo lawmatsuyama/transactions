@@ -8,6 +8,8 @@ definitions:
     type: object
   apimanager.Paging:
     properties:
+      next_page:
+        type: integer
       page:
         type: integer
     type: object
@@ -47,6 +49,7 @@ definitions:
     properties:
       origin_channel:
         type: string
+        enum: [ "desktop-web", "mobile-android", "mobile-ios"]
       transactions:
         items:
           $ref: '#/definitions/apimanager.TransactionSaveRequest'
