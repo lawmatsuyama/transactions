@@ -8,7 +8,7 @@ import (
 
 var (
 	SaveMock        func(ctx context.Context, transactions domain.Transactions) error
-	GetMock         func(ctx context.Context, filterTrs domain.TransactionFilter) (domain.TransactionsPaging, error)
+	GetMock         func(ctx context.Context, filterTrs domain.TransactionFilter) (domain.Transactions, error)
 	GetByIDMock     func(ctx context.Context, id string) (domain.User, error)
 	PublishMock     func(ctx context.Context, excName, routingKey string, obj any, priority uint8) error
 	WithSessionMock func(ctx context.Context, f domain.FuncDBSession) error
@@ -20,7 +20,7 @@ func (m mock) Save(ctx context.Context, transactions domain.Transactions) error 
 	return SaveMock(ctx, transactions)
 }
 
-func (m mock) Get(ctx context.Context, filterTrs domain.TransactionFilter) (domain.TransactionsPaging, error) {
+func (m mock) Get(ctx context.Context, filterTrs domain.TransactionFilter) (domain.Transactions, error) {
 	return GetMock(ctx, filterTrs)
 }
 

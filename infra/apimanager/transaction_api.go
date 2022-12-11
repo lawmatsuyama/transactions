@@ -23,7 +23,18 @@ func NewTransactionAPI(useCase domain.TransactionUseCase) TransactionAPI {
 	}
 }
 
-// Save is an operation of transaction api to save transactions in the application.
+// Save godoc
+//
+//	@Summary		API to save transactions in the application.
+//	@Description	Receives transactions data, registed it in application and finish notifying other applications.
+//	@Tags			transaction
+//	@Accept			json
+//	@Produce		json
+//	@Param			transactions_save_request			body		TransactionsSaveRequest								true	"Transactions Save Request"
+//	@Success		200				{object}	apimanager.GenericResponse
+//	@Failure		400				{object}	apimanager.GenericResponse
+//	@Failure		404				{object}	apimanager.GenericResponse
+//	@Router			/v1/save [post]
 func (api TransactionAPI) Save(w http.ResponseWriter, r *http.Request) {
 	var trsReq TransactionsSaveRequest
 	err := json.NewDecoder(r.Body).Decode(&trsReq)
@@ -34,13 +45,27 @@ func (api TransactionAPI) Save(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
 	trsResult, err := api.UseCase.Save(ctx, trsReq.UserID, trsReq.ToTransactions(Now))
-	var response []TransactionSaveResponse
 	if err != nil {
-		response = FromTransactionSaveResult(trsResult)
+		handleResponse(w, r, FromTransactionSaveResult(trsResult), err)
+		return
 	}
-	handleResponse(w, r, response, err)
+
+	handleResponse(w, r, "Save transactions successfully", err)
+
 }
 
+// Get godoc
+//
+//	@Summary		API to get transactions in the application.
+//	@Description	List transactions by giving filter
+//	@Tags			transaction
+//	@Accept			json
+//	@Produce		json
+//	@Param			transactions_get_request			body		TransactionsGetRequest								true	"Transactions Get Request"
+//	@Success		200				{object}	apimanager.GenericResponse
+//	@Failure		400				{object}	apimanager.GenericResponse
+//	@Failure		404				{object}	apimanager.GenericResponse
+//	@Router			/v1/get [post]
 func (api TransactionAPI) Get(w http.ResponseWriter, r *http.Request) {
 	var trsReq TransactionsGetRequest
 	err := json.NewDecoder(r.Body).Decode(&trsReq)
@@ -50,12 +75,13 @@ func (api TransactionAPI) Get(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx := context.Background()
-	trsPag, err := api.UseCase.Get(ctx, trsReq.ToTransactionsFilter())
-	var response TransactionsGetResponse
-	if err == nil {
-		response = FromTransactionPaging(trsPag)
+	trsPage, err := api.UseCase.Get(ctx, trsReq.ToTransactionsFilter())
+	if err != nil {
+		handleResponse(w, r, nil, err)
+		return
 	}
 
+	response := FromTransactionPaging(trsPage)
 	handleResponse(w, r, response, err)
 }
 

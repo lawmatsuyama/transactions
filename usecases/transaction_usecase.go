@@ -73,6 +73,16 @@ func (useCase TransactionUseCase) Get(ctx context.Context, filter domain.Transac
 		return domain.TransactionsPaging{}, err
 	}
 
-	trsPage, err := useCase.TransactionRepository.Get(ctx, filter)
-	return trsPage, err
+	trs, err := useCase.TransactionRepository.Get(ctx, filter)
+	if err != nil {
+		return domain.TransactionsPaging{}, err
+	}
+
+	trsPage := domain.TransactionsPaging{Transactions: trs}
+	if err = trsPage.IsValid(); err != nil {
+		return domain.TransactionsPaging{}, err
+	}
+
+	trsPage.SetNextPaging()
+	return trsPage, nil
 }

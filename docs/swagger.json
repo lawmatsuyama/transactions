@@ -1,21 +1,194 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Save and list transactions made by user.",
-        "title": "Transactions",
+        "description": "API to save and list user transactions.",
+        "title": "Swagger Transactions API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
+            "name": "Lawrence Matsuyama",
+            "email": "law.matsuyama@outlook.com"
         },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
-        "version": "1.0"
+        "version": "2.0"
     },
-    "host": "localhost",
-    "basePath": "/v1",
-    "paths": {}
+    "host": "localhost:8080",
+    "basePath": "/transactions",
+    "paths": {
+        "/v1/get": {
+            "post": {
+                "description": "List transactions by giving filter",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "API to get transactions in the application.",
+                "parameters": [
+                    {
+                        "description": "Transactions Get Request",
+                        "name": "transactions_get_request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/apimanager.TransactionsGetRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apimanager.GenericResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apimanager.GenericResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/apimanager.GenericResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/save": {
+            "post": {
+                "description": "Receives transactions data, registed it in application and finish notifying other applications.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "API to save transactions in the application.",
+                "parameters": [
+                    {
+                        "description": "Transactions Save Request",
+                        "name": "transactions_save_request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/apimanager.TransactionsSaveRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/apimanager.GenericResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/apimanager.GenericResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/apimanager.GenericResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "apimanager.GenericResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "result": {}
+            }
+        },
+        "apimanager.Paging": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "integer"
+                }
+            }
+        },
+        "apimanager.TransactionSaveRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "operation": {
+                    "type": "string"
+                }
+            }
+        },
+        "apimanager.TransactionsGetRequest": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "amount_greater": {
+                    "type": "number"
+                },
+                "amount_less": {
+                    "type": "number"
+                },
+                "date_from": {
+                    "type": "string"
+                },
+                "date_to": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "operation_type": {
+                    "type": "string"
+                },
+                "origin": {
+                    "type": "string"
+                },
+                "paging": {
+                    "$ref": "#/definitions/apimanager.Paging"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "apimanager.TransactionsSaveRequest": {
+            "type": "object",
+            "properties": {
+                "origin_channel": {
+                    "type": "string"
+                },
+                "transactions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/apimanager.TransactionSaveRequest"
+                    }
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        }
+    }
 }

@@ -28,12 +28,3 @@ func (tr TransactionFilter) Validate() error {
 
 	return nil
 }
-
-// Page returns the current page number of transaction filter
-func (tr TransactionFilter) Page() int64 {
-	if tr.Paging == nil {
-		return 0
-	}
-
-	return tr.Paging.Page
-}

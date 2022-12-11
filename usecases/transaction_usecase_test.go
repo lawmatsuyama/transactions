@@ -215,22 +215,24 @@ func TestGet(t *testing.T) {
 		TransactionsFile         string
 		ExpectedInputGetFile     string
 		ExpectedTransactionsFile string
+		LimitTransactionsByPage  int64
 		ErrorGet                 error
 		ExpectedError            error
 	}{
 		{
-			Name:                     "01_should_return_transactions_ok",
-			FilterFile:               "./testdata/transaction_usecase/get/01_should_return_transactions_ok/filter.json",
-			TransactionsFile:         "./testdata/transaction_usecase/get/01_should_return_transactions_ok/transactions.json",
-			ExpectedInputGetFile:     "./testdata/transaction_usecase/get/01_should_return_transactions_ok/exp_in_get.json",
-			ExpectedTransactionsFile: "./testdata/transaction_usecase/get/01_should_return_transactions_ok/exp_transactions.json",
+			Name:                     "01_should_return_transactions_without_nextpage",
+			FilterFile:               "./testdata/transaction_usecase/get/01_should_return_transactions_without_nextpage/filter.json",
+			TransactionsFile:         "./testdata/transaction_usecase/get/01_should_return_transactions_without_nextpage/transactions.json",
+			ExpectedInputGetFile:     "./testdata/transaction_usecase/get/01_should_return_transactions_without_nextpage/exp_in_get.json",
+			ExpectedTransactionsFile: "./testdata/transaction_usecase/get/01_should_return_transactions_without_nextpage/exp_transactions.json",
+			LimitTransactionsByPage:  20,
 		},
 		{
-			Name:                     "02_should_return_validate_error",
-			FilterFile:               "./testdata/transaction_usecase/get/02_should_return_validate_error/filter.json",
-			TransactionsFile:         "./testdata/transaction_usecase/get/02_should_return_validate_error/transactions.json",
-			ExpectedInputGetFile:     "./testdata/transaction_usecase/get/02_should_return_validate_error/exp_in_get.json",
-			ExpectedTransactionsFile: "./testdata/transaction_usecase/get/02_should_return_validate_error/exp_transactions.json",
+			Name:                     "02_should_return_filter_validate_error",
+			FilterFile:               "./testdata/transaction_usecase/get/02_should_return_filter_validate_error/filter.json",
+			TransactionsFile:         "./testdata/transaction_usecase/get/02_should_return_filter_validate_error/transactions.json",
+			ExpectedInputGetFile:     "./testdata/transaction_usecase/get/02_should_return_filter_validate_error/exp_in_get.json",
+			ExpectedTransactionsFile: "./testdata/transaction_usecase/get/02_should_return_filter_validate_error/exp_transactions.json",
 			ExpectedError:            domain.ErrInvalidOriginChannel,
 		},
 		{
@@ -239,25 +241,42 @@ func TestGet(t *testing.T) {
 			TransactionsFile:         "./testdata/transaction_usecase/get/03_get_repository_should_return_error/transactions.json",
 			ExpectedInputGetFile:     "./testdata/transaction_usecase/get/03_get_repository_should_return_error/exp_in_get.json",
 			ExpectedTransactionsFile: "./testdata/transaction_usecase/get/03_get_repository_should_return_error/exp_transactions.json",
-			ErrorGet:                 domain.ErrTransactionsNotFound,
+			ErrorGet:                 domain.ErrUnknow,
+			ExpectedError:            domain.ErrUnknow,
+		},
+		{
+			Name:                     "04_should_return_transactions_with_nextpage",
+			FilterFile:               "./testdata/transaction_usecase/get/04_should_return_transactions_with_nextpage/filter.json",
+			TransactionsFile:         "./testdata/transaction_usecase/get/04_should_return_transactions_with_nextpage/transactions.json",
+			ExpectedInputGetFile:     "./testdata/transaction_usecase/get/04_should_return_transactions_with_nextpage/exp_in_get.json",
+			ExpectedTransactionsFile: "./testdata/transaction_usecase/get/04_should_return_transactions_with_nextpage/exp_transactions.json",
+			LimitTransactionsByPage:  2,
+		},
+		{
+			Name:                     "05_no_transactions_should_return_transactions_error_not_found_transactions",
+			FilterFile:               "./testdata/transaction_usecase/get/05_no_transactions_should_return_transactions_error_not_found_transactions/filter.json",
+			TransactionsFile:         "./testdata/transaction_usecase/get/05_no_transactions_should_return_transactions_error_not_found_transactions/transactions.json",
+			ExpectedInputGetFile:     "./testdata/transaction_usecase/get/05_no_transactions_should_return_transactions_error_not_found_transactions/exp_in_get.json",
+			ExpectedTransactionsFile: "./testdata/transaction_usecase/get/05_no_transactions_should_return_transactions_error_not_found_transactions/exp_transactions.json",
 			ExpectedError:            domain.ErrTransactionsNotFound,
 		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.Name, func(t *testing.T) {
-			testGet(t, tc.Name, tc.FilterFile, tc.TransactionsFile, tc.ExpectedInputGetFile, tc.ExpectedTransactionsFile, tc.ErrorGet, tc.ExpectedError)
+			testGet(t, tc.Name, tc.FilterFile, tc.TransactionsFile, tc.ExpectedInputGetFile, tc.ExpectedTransactionsFile, tc.LimitTransactionsByPage, tc.ErrorGet, tc.ExpectedError)
 		})
 	}
 }
 
-func testGet(t *testing.T, name, filterFile, trsFile, expInGetFile, expTrsFile string, errGet, expErr error) {
+func testGet(t *testing.T, name string, filterFile, trsFile, expInGetFile, expTrsFile string, limitTrs int64, errGet, expErr error) {
+	domain.LimitTransactionsByPage = limitTrs
 	var filter domain.TransactionFilter
 	domain.ReadJSON(t, filterFile, &filter)
 
 	var gotInGet domain.TransactionFilter
-	GetMock = func(ctx context.Context, filterTrs domain.TransactionFilter) (domain.TransactionsPaging, error) {
+	GetMock = func(ctx context.Context, filterTrs domain.TransactionFilter) (domain.Transactions, error) {
 		gotInGet = filterTrs
-		var trs domain.TransactionsPaging
+		var trs domain.Transactions
 		domain.ReadJSON(t, trsFile, &trs)
 		return trs, errGet
 	}

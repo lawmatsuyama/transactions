@@ -6,26 +6,12 @@ import (
 	"os/signal"
 	"syscall"
 
+	_ "github.com/lawmatsuyama/transactions/docs"
 	"github.com/lawmatsuyama/transactions/infra/apimanager"
 	"github.com/lawmatsuyama/transactions/infra/messagebroker"
 	"github.com/lawmatsuyama/transactions/infra/repository"
 	log "github.com/sirupsen/logrus"
 )
-
-// @title Transactions
-// @version 1.0
-// @description Save and list transactions made by user.
-// @termsOfService http://swagger.io/terms/
-
-// @contact.name API Support
-// @contact.url http://www.swagger.io/support
-// @contact.email support@swagger.io
-
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-
-// @host localhost
-// @BasePath /v1
 
 var (
 	serviceName = "transactions"
@@ -36,6 +22,16 @@ func init() {
 	LoggerSetup()
 }
 
+// @title Swagger Transactions API
+// @version 2.0
+// @description API to save and list user transactions.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name Lawrence Matsuyama
+// @contact.email law.matsuyama@outlook.com
+
+// @host localhost:8080
+// @BasePath /transactions
 func main() {
 	ctx, cancel := start()
 	defer shutdown(ctx, cancel)

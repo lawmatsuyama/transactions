@@ -12,7 +12,7 @@ type UserRepository interface {
 // TransactionRepository represents transaction repository
 type TransactionRepository interface {
 	Save(ctx context.Context, transactions Transactions) error
-	Get(ctx context.Context, filterTrs TransactionFilter) (TransactionsPaging, error)
+	Get(ctx context.Context, filterTrs TransactionFilter) (Transactions, error)
 }
 
 // SessionControlRepository represents session control repository

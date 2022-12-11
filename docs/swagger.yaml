@@ -1,16 +1,128 @@
-basePath: /v1
-host: localhost
+basePath: /transactions
+definitions:
+  apimanager.GenericResponse:
+    properties:
+      error:
+        type: string
+      result: {}
+    type: object
+  apimanager.Paging:
+    properties:
+      page:
+        type: integer
+    type: object
+  apimanager.TransactionSaveRequest:
+    properties:
+      amount:
+        type: number
+      description:
+        type: string
+      operation:
+        type: string
+    type: object
+  apimanager.TransactionsGetRequest:
+    properties:
+      _id:
+        type: string
+      amount_greater:
+        type: number
+      amount_less:
+        type: number
+      date_from:
+        type: string
+      date_to:
+        type: string
+      description:
+        type: string
+      operation_type:
+        type: string
+      origin:
+        type: string
+      paging:
+        $ref: '#/definitions/apimanager.Paging'
+      user_id:
+        type: string
+    type: object
+  apimanager.TransactionsSaveRequest:
+    properties:
+      origin_channel:
+        type: string
+      transactions:
+        items:
+          $ref: '#/definitions/apimanager.TransactionSaveRequest'
+        type: array
+      user_id:
+        type: string
+    type: object
+host: localhost:8080
 info:
   contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
-  description: Save and list transactions made by user.
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    email: law.matsuyama@outlook.com
+    name: Lawrence Matsuyama
+  description: API to save and list user transactions.
   termsOfService: http://swagger.io/terms/
-  title: Transactions
-  version: "1.0"
-paths: {}
+  title: Swagger Transactions API
+  version: "2.0"
+paths:
+  /v1/get:
+    post:
+      consumes:
+      - application/json
+      description: List transactions by giving filter
+      parameters:
+      - description: Transactions Get Request
+        in: body
+        name: transactions_get_request
+        required: true
+        schema:
+          $ref: '#/definitions/apimanager.TransactionsGetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apimanager.GenericResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apimanager.GenericResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/apimanager.GenericResponse'
+      summary: API to get transactions in the application.
+      tags:
+      - transaction
+  /v1/save:
+    post:
+      consumes:
+      - application/json
+      description: Receives transactions data, registed it in application and finish
+        notifying other applications.
+      parameters:
+      - description: Transactions Save Request
+        in: body
+        name: transactions_save_request
+        required: true
+        schema:
+          $ref: '#/definitions/apimanager.TransactionsSaveRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/apimanager.GenericResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/apimanager.GenericResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/apimanager.GenericResponse'
+      summary: API to save transactions in the application.
+      tags:
+      - transaction
 swagger: "2.0"
