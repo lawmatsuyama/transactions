@@ -52,6 +52,7 @@ func GetClientDB(ctx context.Context) (*mongo.Client, error) {
 	return clientDB.Client, err
 }
 
+// CloseDB it will close database connection
 func CloseDB(ctx context.Context) (err error) {
 	if clientDB.Client == nil {
 		return nil

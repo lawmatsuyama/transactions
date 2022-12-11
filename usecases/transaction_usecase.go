@@ -7,6 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// TransactionUseCase implements interface domain.TransactionUseCase
 type TransactionUseCase struct {
 	TransactionRepository domain.TransactionRepository
 	UserRepository        domain.UserRepository
@@ -14,6 +15,7 @@ type TransactionUseCase struct {
 	SessionControl        domain.SessionControlRepository
 }
 
+// NewTransactionUseCase returns a new TransactionUseCase
 func NewTransactionUseCase(transactionRepository domain.TransactionRepository, userRepository domain.UserRepository, messagePublisher domain.MessagePublisher, sessionControl domain.SessionControlRepository) TransactionUseCase {
 	return TransactionUseCase{
 		TransactionRepository: transactionRepository,
@@ -23,6 +25,7 @@ func NewTransactionUseCase(transactionRepository domain.TransactionRepository, u
 	}
 }
 
+// Save it will save transactions according to the given userID. Transactions and user must be valid, otherwise it will rollback and return error.
 func (useCase TransactionUseCase) Save(ctx context.Context, userID string, transactions domain.Transactions) ([]domain.TransactionSaveResult, error) {
 	l := log.WithField("user_id", userID)
 	if userID == "" {
@@ -65,6 +68,7 @@ func (useCase TransactionUseCase) Save(ctx context.Context, userID string, trans
 
 }
 
+// Get it will return transactions given filter.
 func (useCase TransactionUseCase) Get(ctx context.Context, filter domain.TransactionFilter) (domain.TransactionsPaging, error) {
 	l := log.WithField("filter", filter)
 	err := filter.Validate()

@@ -7,6 +7,7 @@ import (
 )
 
 var (
+	// LimitTransactionsToSave is a global variable to limit transactions to save. It's public for test purposes
 	LimitTransactionsToSave int = 20
 )
 

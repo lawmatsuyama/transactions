@@ -35,6 +35,7 @@ func newMessageBroker(conn *amqp.Connection, chPub, chCons *amqp.Channel, chNoti
 	}
 }
 
+// Start start connection and setup queues/exchanges according to the given setuper.
 func Start(ctx context.Context, setuper BrokerSetuper) {
 	url := os.Getenv("MESSAGE_BROKER_URL")
 	if url == "" {
@@ -68,7 +69,7 @@ func Start(ctx context.Context, setuper BrokerSetuper) {
 	}()
 }
 
-// Shutdown finishes everything
+// Shutdown finishes connection with message broker
 func Shutdown() {
 	if broker == nil || broker.connection == nil {
 		return
@@ -80,6 +81,7 @@ func Shutdown() {
 	}
 }
 
+// Connect connect to rabbitmq and open channels
 func Connect(url string) error {
 	conn, err := connect(url)
 	if err != nil {
@@ -97,6 +99,7 @@ func Connect(url string) error {
 	return nil
 }
 
+// CreateQueue create queue on rabbitmq. If the queue does not already exist, the server will create it
 func CreateQueue(queueName string, durable bool, args amqp.Table) (amqp.Queue, error) {
 	q, err := broker.consumerChannel.QueueDeclare(
 		queueName,
@@ -109,7 +112,7 @@ func CreateQueue(queueName string, durable bool, args amqp.Table) (amqp.Queue, e
 	return q, err
 }
 
-// CreateExchange creates exchange on rabbitMQ, case does not exist
+// CreateExchange creates exchange on rabbitMQ. If the exchange does not already exist, the server will create it
 func CreateExchange(excName string, excType string, args amqp.Table) error {
 	err := broker.consumerChannel.ExchangeDeclare(
 		excName,
@@ -124,6 +127,7 @@ func CreateExchange(excName string, excType string, args amqp.Table) error {
 	return err
 }
 
+// BindQueueExchange bind an exchange to the queue.
 func BindQueueExchange(queueName, exchangeName, routingKey string) error {
 	return broker.consumerChannel.QueueBind(
 		queueName,    //name of the queue
@@ -134,12 +138,14 @@ func BindQueueExchange(queueName, exchangeName, routingKey string) error {
 	)
 }
 
+// Consume create consumer to queue
 func Consume(ctx context.Context, queueName, consumer string, f func(amqp.Delivery)) {
 	go func() {
 		consume(ctx, queueName, consumer, f)
 	}()
 }
 
+// Publish publish message by given exchange and routingKey
 func Publish(ctx context.Context, excName, routingKey string, obj any, priority uint8) error {
 	retry := 0
 	for {

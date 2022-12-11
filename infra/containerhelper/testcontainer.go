@@ -7,6 +7,7 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 )
 
+// CreateContainer should be used to create containers in integration test. Ex.: create container for mongodb
 func CreateContainer(ctx context.Context, req testcontainers.ContainerRequest, exposedPort string) (container testcontainers.Container, port int, err error) {
 	container, err = testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,

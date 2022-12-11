@@ -9,7 +9,7 @@ func (s BrokerSetup) Setup() error {
 }
 
 const (
-	// ExchangeTransaction is a exchange to notify transactions saved
+	// ExchangeTransactionSaved is a exchange to notify transactions saved
 	ExchangeTransactionSaved = "EXC.TRANSACTION.SAVED"
 	// QueueTransactionSaved is one of the queues that receive transactions saved
 	QueueTransactionSaved = "QUEUE.TRANSACTION.SAVED"

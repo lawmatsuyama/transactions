@@ -15,16 +15,19 @@ const (
 	batchSize int32 = 20
 )
 
+// TransactionDB implements interface domain.TransactionRepository
 type TransactionDB struct {
 	Client *mongo.Client
 }
 
+// NewTransactionDB returns a new TransactionDB
 func NewTransactionDB(client *mongo.Client) TransactionDB {
 	return TransactionDB{
 		Client: client,
 	}
 }
 
+// Save it will save the given transactions on mongodb
 func (db TransactionDB) Save(ctx context.Context, transactions domain.Transactions) error {
 	c := db.Client.Database("account").Collection("transaction")
 	models := bulkInsertModel(transactions)
@@ -37,6 +40,7 @@ func (db TransactionDB) Save(ctx context.Context, transactions domain.Transactio
 	return nil
 }
 
+// Get it will return transactions from mongodb according to the given filter
 func (db TransactionDB) Get(ctx context.Context, filterTrs domain.TransactionFilter) (trs domain.Transactions, err error) {
 	l := log.WithField("filter", filterTrs)
 	c := db.Client.Database("account").Collection("transaction")

@@ -16,7 +16,7 @@ func (err ErrorTransaction) Error() string {
 	return err.ErrorOrigin.Error()
 }
 
-// Error return an http status code
+// Status return an http status code
 func (err ErrorTransaction) Status() int {
 	return err.StatusCode
 }

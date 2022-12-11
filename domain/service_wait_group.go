@@ -11,7 +11,7 @@ func AddTaskCount() {
 	wg.Add(1)
 }
 
-// DoneTaks done task in the general wait group service
+// DoneTask done task in the general wait group service
 func DoneTask() {
 	wg.Done()
 }

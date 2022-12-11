@@ -14,6 +14,7 @@ type TransactionAPI struct {
 	UseCase domain.TransactionUseCase
 }
 
+// NewTransactionAPI returns a new TransactionAPI
 func NewTransactionAPI(useCase domain.TransactionUseCase) TransactionAPI {
 	return TransactionAPI{
 		UseCase: useCase,

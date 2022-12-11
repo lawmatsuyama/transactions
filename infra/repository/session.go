@@ -8,16 +8,20 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// SessionControlDB implements interface domain.SessionControlRepository
 type SessionControlDB struct {
 	Client *mongo.Client
 }
 
+// NewSessionControlDB returns a new SessionControlDB
 func NewSessionControlDB(client *mongo.Client) SessionControlDB {
 	return SessionControlDB{
 		Client: client,
 	}
 }
 
+// WithSession start a new session on mongo DB and execute the given FuncDBSession inside the session.
+// if FuncDBSession returns no errors then it will commit the transactions, otherwise it will rollback the transactions.
 func (db SessionControlDB) WithSession(ctx context.Context, f domain.FuncDBSession) error {
 	var session mongo.Session
 	var err error

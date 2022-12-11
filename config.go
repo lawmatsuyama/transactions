@@ -27,6 +27,7 @@ func LoggerSetup() {
 	log.SetReportCaller(false)
 }
 
+// StartDependencies it will start and inject dependencies into api
 func StartDependencies(ctxWithCancel context.Context) {
 	brokeSetuper := messagebroker.NewSetuper()
 	messagebroker.Start(ctxWithCancel, brokeSetuper)

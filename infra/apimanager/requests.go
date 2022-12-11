@@ -13,7 +13,7 @@ type TransactionSaveRequest struct {
 	Operation   string  `json:"operation" bson:"operation"`
 }
 
-// TransactionSaveRequest represents a request of Save transaction operation represents a request of Save transaction operation
+// TransactionsSaveRequest represents a request of Save transaction operation represents a request of Save transaction operation
 type TransactionsSaveRequest struct {
 	UserID        string                   `json:"user_id" bson:"user_id"`
 	OriginChannel string                   `json:"origin_channel" bson:"origin_channel"`
@@ -36,6 +36,7 @@ func (trsReq TransactionsSaveRequest) ToTransactions(now time.Time) domain.Trans
 	return trs
 }
 
+// Paging represents paging struct
 type Paging struct {
 	Page     int64  `json:"page"`
 	NextPage *int64 `json:"next_page,omitempty"`

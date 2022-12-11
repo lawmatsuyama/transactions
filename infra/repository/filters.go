@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+// IsZeroFunc represents a generic type func to check if value is zero value
 type IsZeroFunc[T any] func(value T) bool
 
 func isZeroComparable[T comparable](value T) bool {
