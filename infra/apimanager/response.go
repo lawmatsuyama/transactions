@@ -71,7 +71,8 @@ func FromTransactionPaging(trsPag domain.TransactionsPaging) TransactionsGetResp
 	trsGetResp := TransactionsGetResponse{Transactions: trs}
 	if trsPag.Paging != nil {
 		trsGetResp.Paging = &Paging{
-			Page: trsPag.Paging.Page,
+			Page:     trsPag.Paging.Page,
+			NextPage: trsPag.Paging.NextPage,
 		}
 	}
 

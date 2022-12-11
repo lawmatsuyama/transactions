@@ -3,20 +3,29 @@ package domain
 import (
 	"sync"
 
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
+)
+
+var (
+	LimitTransactionsToSave int = 20
 )
 
 // Transactions represents a list of transaction
 type Transactions []*Transaction
 
-// ValidateTransactions check if all transactions are valid
-func (trs Transactions) ValidateTransactions() ([]TransactionSaveResult, error) {
+// ValidateTransactionsToSave check if all transactions are valid
+func (trs Transactions) ValidateTransactionsToSave() ([]TransactionSaveResult, error) {
 	chResult := make(chan TransactionSaveResult, len(trs))
 	trsResult := make([]TransactionSaveResult, 0, len(trs))
 
 	if len(trs) == 0 {
-		logrus.WithError(ErrInvalidTransaction).Error("There is no transactions to process")
+		log.WithError(ErrInvalidTransaction).Error("There is no transactions to process")
 		return nil, ErrInvalidTransaction
+	}
+
+	if len(trs) > LimitTransactionsToSave {
+		log.WithField("limit_transactions", LimitTransactionsToSave).WithError(ErrInvalidTransaction).Error("Too many transactions to save")
+		return nil, ErrTooManyTransaction
 	}
 
 	go func() {

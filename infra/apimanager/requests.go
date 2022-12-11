@@ -37,7 +37,8 @@ func (trsReq TransactionsSaveRequest) ToTransactions(now time.Time) domain.Trans
 }
 
 type Paging struct {
-	Page int64
+	Page     int64  `json:"page"`
+	NextPage *int64 `json:"next_page,omitempty"`
 }
 
 // TransactionsGetRequest represents a request of Get transactions operation

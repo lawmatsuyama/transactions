@@ -41,7 +41,7 @@ func (useCase TransactionUseCase) Save(ctx context.Context, userID string, trans
 		return nil, err
 	}
 
-	trsResult, err := transactions.ValidateTransactions()
+	trsResult, err := transactions.ValidateTransactionsToSave()
 	if err != nil {
 		l.WithError(err).Error("There are some transactions invalid")
 		return trsResult, err
@@ -78,7 +78,7 @@ func (useCase TransactionUseCase) Get(ctx context.Context, filter domain.Transac
 		return domain.TransactionsPaging{}, err
 	}
 
-	trsPage := domain.TransactionsPaging{Transactions: trs}
+	trsPage := domain.TransactionsPaging{Transactions: trs, Paging: filter.Paging}
 	if err = trsPage.IsValid(); err != nil {
 		return domain.TransactionsPaging{}, err
 	}
