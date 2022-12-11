@@ -139,3 +139,6 @@ user: guest
 password: guest
 
 There is an fanout exchange EXC.TRANSACTION.SAVED and a queue QUEUE.TRANSACTION.SAVED receiving notifications of transactions saved. 
+
+Feel free to contact me if necessary:
+email: law.matsuyama@outlook.com
