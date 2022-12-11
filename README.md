@@ -7,6 +7,17 @@ This API was build using:
 - Rabbitmq as event bus to notify transactions saved
 - API REST
 
+It is using hexagonal architecture:
+- domain: contains all domain models and ports/interfaces
+- infra: contains all adapters to external services
+  - apimanager: contains request/response of apis, routes, handlers and setup of http server
+  - containerhelper: contains a helper to up testcontainer-go
+  - messagebroker: contains rabbitmq setup and implementations to publish and consume messages
+  - repository: contains setup for mongodb client and implementations for database operations
+- usecases: contains all orchestrations of business logic to domain.
+- docs: contains files to swagger
+- db: contains script to initialize database
+
 ## How to start API
 
 You need to have `docker` and `docker-compose` installed before execute `transactions` api
